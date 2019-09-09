@@ -1,0 +1,125 @@
+﻿@model TrebovanjaNarudzbe.Web.ViewModels.TrebovanjeViewModel
+<div class="col-md-6">
+    <div class="jumbotron shadow-lg rounded mb-5 p-4">
+        <div class="row">
+            <div class="col-6">
+                <h5>Serijski broj: @Model.SerijskiBroj</h5>
+                <h5>Poručilac: @Model.ImeIPrezimeRadnika</h5>
+            </div>
+            <div class="col-6 text-right">
+                <h5>Datum podnošenja zahtjeva:<br> @Model.DatumPodnesenogZahtjeva.ToShortDateString()</h5>
+            </div>
+        </div>
+        <hr class="my-4">
+
+
+        <div class="widget has-shadow">
+
+            <div class="widget-body-no-padding">
+                <div class="table-responsive">
+                    <table class="table mb-0 table-bordered">
+                        <thead class="bg-primary text-white">
+                            <tr>
+                                <th>Šifra artikla</th>
+                                <th>Naziv artikla</th>
+                                <th>Tražena količina</th>
+                                <th>Spremno</th>
+                                <th>Preuzeto</th>
+                            </tr>
+                        </thead>
+                        @for (int i = 0; i < Model.ListaArtikalaTrebovanja.Count(); i++)
+                        {
+                            <tbody>
+                                @if (i % 2 == 0)
+                                {
+                                    <tr class="bg-white">
+                                        <td>@Model.ListaArtikalaTrebovanja[i].ArtikalId</td>
+                                        <td>@Model.ListaArtikalaTrebovanja[i].Naziv</td>
+                                        <td>@Model.ListaArtikalaTrebovanja[i].TrebovanaKolicina</td>
+                                        @if (Model.ListaArtikalaTrebovanja[i].Spremno)
+                                        {
+                                            <td>
+                                                <input class="SpremnoCheckBox" type="checkbox" name="checkBoxSpremno" checked>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                <input class="SpremnoCheckBox" type="checkbox" name="checkBoxSpremno">
+                                            </td>
+                                        }
+                                        @if (Model.ListaArtikalaTrebovanja[i].Preuzeto)
+                                        {
+                                            <td>
+                                                <input class="PreuzetoCheckBox" type="checkbox" name="checkBoxPreuzeto" checked>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                <input class="PreuzetoCheckBox" type="checkbox" name="checkBoxPreuzeto">
+                                            </td>
+                                        }
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr class="bg-light">
+                                        <td>@Model.ListaArtikalaTrebovanja[i].ArtikalId</td>
+                                        <td>@Model.ListaArtikalaTrebovanja[i].Naziv</td>
+                                        <td>@Model.ListaArtikalaTrebovanja[i].TrebovanaKolicina</td>
+                                        @if (Model.ListaArtikalaTrebovanja[i].Spremno)
+                                        {
+                                            <td>
+                                                <input class="SpremnoCheckBox" type="checkbox" name="checkBoxSpremno" checked>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                <input class="SpremnoCheckBox" type="checkbox" name="checkBoxSpremno">
+                                            </td>
+                                        }
+                                        @if (Model.ListaArtikalaTrebovanja[i].Preuzeto)
+                                        {
+                                            <td>
+                                                <input class="PreuzetoCheckBox" type="checkbox" name="checkBoxPreuzeto" checked>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                <input class="PreuzetoCheckBox" type="checkbox" name="checkBoxPreuzeto">
+                                            </td>
+                                        }
+                                    </tr>
+                                }
+                            </tbody>
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <hr class="my-4">
+        <div class="row text-left">
+            <div class="col-6 ">
+                <button type="button" class="btn btn-outline-primary mr-1 mb-2" data-toggle="popover"
+                        data-placement="bottom" title="Napomena radnika"
+                        data-content="@Model.NapomenaRadnika">
+                    Napomena radnika
+                </button>
+            </div>
+            <div class="col-6 text-right">
+                <button type="button" class="btn btn-outline-primary mr-1 mb-2" data-toggle="popover"
+                        data-placement="bottom" title="Napomena nadređenog"
+                        data-content="@Model.NapomenaNadredjenog">
+                    Napomena nadređenog
+                </button>
+            </div>
+            <div class="row text-right">
+                <button type="button" value=@Model.TrebovanjeId style="font-size:15px; margin-left:30px; background-color: mediumseagreen" class="btnSacuvajIzmjene btn btn-outline-primary btn-lg">Sačuvaj izmjene</button>
+            </div>
+        </div>
+    </div>
+</div>

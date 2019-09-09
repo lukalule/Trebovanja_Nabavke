@@ -1,0 +1,64 @@
+﻿@model IPagedList<TrebovanjaNarudzbe.Web.ViewModels.TrebovanjeViewModel>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Naslov = "Trebovanja > " + ViewBag.Naslov;
+    ViewBag.Title = "Aktivna Trebovanja";
+}
+
+@using X.PagedList.Mvc; @*//import this so we get our HTML Helper*@
+@using X.PagedList; @*//import this so we can cast our list to IPagedList (only necessary because ViewBag is dynamic)*@
+
+<span hidden id="Metoda">@ViewBag.Metoda</span>
+
+    <div class="row mb-5">
+        <div class="col">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputSortiranjeDatum" style="background-color:#538AC5; color:white"> <i class="fa fa-search searchIcon" style="padding:0;"></i>&nbsp; Sortiranje po datumu</label>
+                </div>
+                <select name="SortiranjeDatum" class="custom-select" id="inputSortiranjeDatum">
+                    <option value="2" @if (ViewBag.SortiranjeDatum == "Od najnovijeg ka najstarijem") { <text> selected</text> }>Od najnovijeg ka najstarijem</option>
+                    <option value="1" @if (ViewBag.SortiranjeDatum == "Od najstarijeg ka najnovijem") { <text> selected</text> }>Od najstarijeg ka najnovijem</option>
+                </select>
+            </div>
+        </div>
+        <div class="col">
+            <div class="btn-toolbar float-right" role="toolbar">
+                <div class="btn-group " role="group" aria-label="First group">
+                    <button type="button" class="btn  btn-outline-primary active" data-toggle="tooltip" data-placement="top" title="Prikaži listu"><i class="fa fa-list" aria-hidden="true"></i></button>
+
+                    <a href="@Url.Action("TabelarniPrikaz" + ViewBag.Metoda, "Trebovanje")" data-toggle="tooltip" data-placement="top" title="Tabelarni prikaz" class="btn  btn-outline-primary">
+                        <i class="fa fa-table" aria-hidden="true"></i>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row align-items-start">
+
+        @foreach (var trebovanje in Model)
+        {
+            @Html.Partial("_TrebovanjePartial", trebovanje)
+        }
+
+    </div>
+
+
+@*//postavljanje paginacije na centar ekrana*@
+<div class="row h-100 justify-content-center align-items-center p-5">
+    @{string vrijednost = "1";
+        if (ViewBag.SortiranjeDatum == "Od najnovijeg ka najstarijem")
+        {
+            vrijednost = "2";
+        }
+    }
+    @Html.PagedListPager((IPagedList)Model.Select(x => x.ListaArtikalaTrebovanja), page => Url.Action(ViewBag.Metoda, new { page, vrijednost }))
+</div>
+
+@section scripts{
+
+    <script src="~/Scripts/Skripte/SvaMojaTrebovanja.js"></script>
+}

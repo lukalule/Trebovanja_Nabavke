@@ -1,0 +1,171 @@
+﻿@model IPagedList<TrebovanjaNarudzbe.Web.ViewModels.TrebovanjeViewModel>
+@{
+    ViewBag.Title = "Aktivna Trebovanja";
+    ViewBag.Naslov = "Skladište > Aktivna Trebovanja";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using X.PagedList.Mvc; @*//import this so we get our HTML Helper*@
+@using X.PagedList; @*//import this so we can cast our list to IPagedList (only necessary because ViewBag is dynamic)*@
+
+<style>
+    .searchContainer {
+        display: inline-flex;
+        flex: 1 1 300px;
+        position: relative;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .searchIcon {
+        padding: 0.5rem;
+    }
+
+    .searchBox {
+        border: 0;
+        padding: 0.5rem 0.5rem 0.5rem 0;
+        flex: 1;
+    }
+
+    .searchButton {
+        background: #538AC5;
+        border: 0;
+        color: white;
+        padding: 0.5rem;
+        border-radius: 0;
+    }
+
+    .margina {
+        margin-bottom: 50px;
+    }
+
+    .textNaslov {
+        font-size: 1.1rem
+    }
+
+    .textDatum {
+        font-size: 1.1rem
+    }
+
+    .paddingJumbotron {
+        padding: 2rem 2rem;
+    }
+
+    .pozadinaTabele {
+        background-color: #538AC5;
+        color: white;
+        font-size: 15px;
+    }
+
+    .pozadina {
+        background-color: #ffde7b6e;
+    }
+</style>
+
+
+@using (Html.BeginForm())
+{
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 mb-4">
+
+            <a class="btn btn-outline-primary btn-lg" data-toggle="collapse" href="#filter" role="button" aria-expanded="false" aria-controls="filter"><i class="fas fa-filter"></i>Prikaži filter</a>
+
+        </div>
+        <div class="col-md-6">
+            <div class="btn-toolbar float-right" role="toolbar">
+                <div class="btn-group " role="group" aria-label="First group">
+
+                    <button type="button" class="btn  btn-outline-primary active" data-toggle="tooltip" data-placement="top" title="Prikaži listu"><i class="fa fa-list" aria-hidden="true"></i></button>
+                    <a href="@Url.Action("TabelarniPrikazAktivnihTrebovanja", "Skladiste")" data-toggle="tooltip" data-placement="top" title="Tabelarni prikaz" class="btn  btn-outline-primary">
+                        <i class="fa fa-table" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Partial("_Filter")
+    <div class="row">
+        <div class="col-md-12 margina">
+            @foreach (var item in Model)
+            {
+
+                <div id="@item.TrebovanjeId" class="col-md-12 jumbotron bg-white paddingJumbotron shadow-lg rounded mb-5 mt-5">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h2 class="textNaslov"><span style="font-weight:normal;">Trebovanje:</span> @item.SerijskiBroj </h2>
+                            <h2 class="display-4 textNaslov">Poručilac: <span class="font-weight-bold">@item.ImeIPrezimeRadnika</span></h2>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <h2 class="textDatum">Datum podnošenja zahtjeva:<br /> @item.DatumPodnesenogZahtjeva.ToString("dd. MMM yyyy")</h2>
+                        </div>
+
+                    </div>
+                    <hr class="my-4">
+                    <ul class="list-group font-weight-bolder">
+                        <li class="list-group-item pozadinaTabele">Artikli:</li>
+                        @foreach (var artikl in item.ListaArtikalaTrebovanja)
+                        {
+                            //if provjera ako je item preuzet da se doda zelena bg na li
+                            <li class="list-group-item @if (artikl.Preuzeto) { <text>list-group-item-success</text> } else if(artikl.Spremno){<text>pozadina</text> } " rel="@artikl.ArtiklId">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        Naziv: <span class="font-weight-bolder">@artikl.Naziv</span> <br /> Količina:  &nbsp;<span class="font-weight-bolder">@artikl.TrebovanaKolicina</span>
+                                    </div>
+                                    @*provjera ako je artikl cekiran cekiraj checkbox*@
+                                    <div class="col-md-5 text-right mr-1">
+                                        @if (artikl.Spremno)
+                                        {
+
+                                            <input class="SpremnoCheckBox mr-1" type="checkbox" name="checkBoxSpremno" checked><span class="mr-4">Spremno</span>
+                                        }
+                                        else
+                                        { <input class="SpremnoCheckBox mr-1" type="checkbox" name="checkBoxSpremno"><span class="mr-4">Spremno</span>}
+                                        @if (artikl.Preuzeto)
+                                        {
+                                            <input class="PreuzetoCheckBox  mr-1" type="checkbox" name="checkBoxPreuzeto" checked><span>Preuzeto</span>
+                                        }
+                                        else
+                                        { <input class="PreuzetoCheckBox  mr-1" type="checkbox" name="checkBoxPreuzeto"><span>Preuzeto</span>}
+                                    </div>
+                                </div>
+                            </li>
+
+                        }
+
+                    </ul>
+                    <div class="text-right">
+                        <hr class="my-4">
+                        <button type="button" value="@item.TrebovanjeId" class="btnSacuvajIzmjene btn btn-outline-primary btn-lg"><i class="fas fa-save" style="font-size:15pt;"></i>Sačuvaj</button>
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
+
+
+    <div class="row h-100 justify-content-center align-items-center p-5">
+        @Html.PagedListPager((IPagedList)Model.Select(x => x.ListaArtikalaTrebovanja), page => Url.Action("FilterTrebovanje", new { SortiranjePoImenu = ViewBag.SortiranjePoImenu, SortiranjeDatum = ViewBag.SortiranjeDatum, page }))
+    </div>
+
+</div>
+
+    <!--modal koji ima loader u sebi-->
+<div class="modal modal-backdrop fade" id="loader" tabindex="-1" role="dialog" aria-labelledby="loaderModal" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="top:22%">
+        <div class="cssload-loader">
+            <div class="cssload-inner cssload-one"></div>
+            <div class="cssload-inner cssload-two"></div>
+            <div class="cssload-inner cssload-three"></div>
+        </div>
+    </div>
+</div>
+
+
+}
+@section scripts{
+    <script src="~/Scripts/Skripte/AktivnaTrebovanjaZaSkladiste.js"></script>
+}

@@ -1,0 +1,33 @@
+﻿@model TrebovanjaNarudzbe.Web.ViewModels.TrebovanjeViewModel
+
+<div id="@Model.TrebovanjeId" class="col-md-12 bg-white jumbotron paddingJumbotron shadow-lg rounded mb-5 mt-5">
+    <div class="row font-weight-bolder">
+        <div class="col-md-12 mb-3"><h4>Trebovanje @Model.SerijskiBroj</h4></div>
+        @*<div class="col-md-6 mb-3 text-right">  <button id="btnPrint" type="button" class="btn btn-outline-primary"><i class="fas fa-print"></i>&nbsp;Print</button></div>*@
+        <div class="col-md-6"> <p>Sifra Radnika: @Model.SifraRadnika</p>   <p>Poručilac: @Model.ImeIPrezimeRadnika</p></div>
+        <div class="col-md-6 text-right"><p>Datum podnošenja zahtjeva: @Model.DatumPodnesenogZahtjeva.ToString("dd. MMM yyyy")</p><p>Datum zaduzenja trebovanja: @(((DateTime)(Model.DatumZaduzenjaTrebovanja)).ToString("dd. MMM yyyy"))</p></div>
+    </div>
+    <hr class="my-4">
+
+    <div class="table-responsive">
+        <table class="table mb-0 table-bordered table-striped">
+            <thead class="text-white">
+                <tr style="background: #538AC5;">
+                    <th>Šifra artikla</th>
+                    <th>Naziv artikla</th>
+                    <th>Količina</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var artikl in Model.ListaArtikalaTrebovanja)
+                {
+                    <tr>
+                        <td>@artikl.ArtiklId</td>
+                        <td>@artikl.Naziv</td>
+                        <td>@artikl.TrebovanaKolicina</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

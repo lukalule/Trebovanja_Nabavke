@@ -1,0 +1,1050 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Trebovanje_i_NabavkeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DatumiOdobravanjaNabavke">
+          <Key>
+            <PropertyRef Name="NabavkaId" />
+          </Key>
+          <Property Name="DatumOdobravanjaNivoa1" Type="datetime" />
+          <Property Name="DatumOdobravanjaNivoa2" Type="datetime" />
+          <Property Name="DatumOdobravanjaNivoa3" Type="datetime" />
+          <Property Name="NabavkaId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DatumiOdobravanjaTrebovanje">
+          <Key>
+            <PropertyRef Name="TrebovnajeId" />
+          </Key>
+          <Property Name="DatumOdobravanjaNivoa1" Type="datetime" />
+          <Property Name="DatumOdobravanjaNivoa2" Type="datetime" />
+          <Property Name="DatumOdobravanjaNivoa3" Type="datetime" />
+          <Property Name="TrebovnajeId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Dokument">
+          <Key>
+            <PropertyRef Name="DokumentId" />
+          </Key>
+          <Property Name="DokumentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Naziv" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="NabavkaId" Type="int" Nullable="false" />
+          <Property Name="Dokument" Type="varbinary(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NabavkaVezna">
+          <Key>
+            <PropertyRef Name="NabavkaVeznaId" />
+          </Key>
+          <Property Name="NabavkaVeznaId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NabavkaId" Type="int" Nullable="false" />
+          <Property Name="Opis" Type="nvarchar" MaxLength="500" />
+          <Property Name="Kolicina" Type="int" Nullable="false" />
+          <Property Name="Cijena" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="Dobavljac" Type="nvarchar" MaxLength="100" />
+          <Property Name="StatusId" Type="int" />
+          <Property Name="ArtiklId" Type="int" />
+        </EntityType>
+        <EntityType Name="Nabavke">
+          <Key>
+            <PropertyRef Name="NabavkaId" />
+          </Key>
+          <Property Name="NabavkaId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SifraRadnika" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="SifraReferentaNabavke" Type="char" MaxLength="4" />
+          <Property Name="TipId" Type="int" Nullable="false" />
+          <Property Name="StatusNabavkeId" Type="int" Nullable="false" />
+          <Property Name="SerijskiBroj" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DatumPodnosenjaZahtjeva" Type="datetime" Nullable="false" />
+          <Property Name="DatumRazmatranjaZahtjeva" Type="datetime" />
+          <Property Name="DatumPreuzimanja" Type="datetime" />
+          <Property Name="BrojDokumenata" Type="int" />
+          <Property Name="Obrazlozenja" Type="nvarchar" MaxLength="500" />
+          <Property Name="NapomenaSefa" Type="nvarchar" MaxLength="500" />
+          <Property Name="NapomenaReferentaNabavke" Type="nvarchar" MaxLength="500" />
+          <Property Name="VezanaNabavkaId" Type="int" />
+          <Property Name="Odgovoran" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="ReferentNabavke">
+          <Key>
+            <PropertyRef Name="ReferentId" />
+          </Key>
+          <Property Name="ReferentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TipNabavkeId" Type="int" Nullable="false" />
+          <Property Name="SifraRadnika" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="Napomena" Type="nvarchar" MaxLength="500" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RezervisaniArtikli">
+          <Key>
+            <PropertyRef Name="ArtikalId" />
+          </Key>
+          <Property Name="ArtikalId" Type="int" Nullable="false" />
+          <Property Name="TrenutnaKolicina" Type="int" Nullable="false" />
+          <Property Name="RezervisanaKolicina" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="StatusId" />
+          </Key>
+          <Property Name="StatusId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StatusNaziv" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TipNabavke">
+          <Key>
+            <PropertyRef Name="TipId" />
+          </Key>
+          <Property Name="TipId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Naziv" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Trebovanje">
+          <Key>
+            <PropertyRef Name="TrebovanjeId" />
+          </Key>
+          <Property Name="TrebovanjeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SifraRadnika" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="SerijskiBroj" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="DatumPodnosenjaZahtjeva" Type="datetime" Nullable="false" />
+          <Property Name="DatumZaduzenjaTrebovanja" Type="datetime" />
+          <Property Name="NapomenaRadnika" Type="nvarchar" MaxLength="1000" />
+          <Property Name="NapomenaNadredjenog" Type="nvarchar" MaxLength="1000" />
+          <Property Name="StatusTrebovanjaId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TrebovanjeVezna">
+          <Key>
+            <PropertyRef Name="TrebovanjeVeznaId" />
+          </Key>
+          <Property Name="TrebovanjeVeznaId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ArtikalId" Type="int" Nullable="false" />
+          <Property Name="TrebovanjeId" Type="int" Nullable="false" />
+          <Property Name="StatusArtiklaId" Type="int" Nullable="false" />
+          <Property Name="TrebovanaKolicina" Type="int" Nullable="false" />
+          <Property Name="KolicinaKojaNedostaje" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Trebovanje_i_Nabavke.dbo.vInformacijeOArtiklu' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vInformacijeOArtiklu">
+          <Key>
+            <PropertyRef Name="ArtikalId" />
+            
+            
+            
+          </Key>
+          <Property Name="ArtikalId" Type="int" Nullable="false" />
+          <Property Name="Naziv" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="KolicinaNaStanju" Type="int" Nullable="false" />
+          <Property Name="Cijena" Type="numeric" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Trebovanje_i_Nabavke.dbo.vRadnik' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vRadnik">
+          <Key>
+            <PropertyRef Name="RadnikSifra" />
+            
+            
+            
+            
+          </Key>
+          <Property Name="RadnikSifra" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="Prezime" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Ime" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="KorisnickoIme" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Nivo1OdobravanjaSifra" Type="char" MaxLength="4" />
+          <Property Name="Nivo2OdobravanjaSifra" Type="char" MaxLength="4" />
+          <Property Name="Nivo3OdobravanjaSifra" Type="char" MaxLength="4" />
+          <Property Name="SektorSifra" Type="char" MaxLength="1" />
+          <Property Name="RadnikUlogaId" Type="tinyint" />
+          <Property Name="TimId" Type="int" />
+          <Property Name="NazivTima" Type="nvarchar" MaxLength="200" />
+          <Property Name="SifraLideraTima" Type="char" MaxLength="4" />
+          <Property Name="NazivUloge" Type="nvarchar" MaxLength="50" />
+          <Property Name="NazivSektora" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_DatumiOdobravanjaNabavke_Nabavke">
+          <End Role="Nabavke" Type="Self.Nabavke" Multiplicity="1" />
+          <End Role="DatumiOdobravanjaNabavke" Type="Self.DatumiOdobravanjaNabavke" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Nabavke">
+              <PropertyRef Name="NabavkaId" />
+            </Principal>
+            <Dependent Role="DatumiOdobravanjaNabavke">
+              <PropertyRef Name="NabavkaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Dokument_Nabavke">
+          <End Role="Nabavke" Type="Self.Nabavke" Multiplicity="1" />
+          <End Role="Dokument" Type="Self.Dokument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Nabavke">
+              <PropertyRef Name="NabavkaId" />
+            </Principal>
+            <Dependent Role="Dokument">
+              <PropertyRef Name="NabavkaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NabavkaVezna_Nabavke">
+          <End Role="Nabavke" Type="Self.Nabavke" Multiplicity="1" />
+          <End Role="NabavkaVezna" Type="Self.NabavkaVezna" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Nabavke">
+              <PropertyRef Name="NabavkaId" />
+            </Principal>
+            <Dependent Role="NabavkaVezna">
+              <PropertyRef Name="NabavkaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Nabavke_Nabavke">
+          <End Role="Nabavke" Type="Self.Nabavke" Multiplicity="0..1" />
+          <End Role="Nabavke1" Type="Self.Nabavke" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Nabavke">
+              <PropertyRef Name="NabavkaId" />
+            </Principal>
+            <Dependent Role="Nabavke1">
+              <PropertyRef Name="VezanaNabavkaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Nabavke_Status">
+          <End Role="Status" Type="Self.Status" Multiplicity="1" />
+          <End Role="Nabavke" Type="Self.Nabavke" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="StatusId" />
+            </Principal>
+            <Dependent Role="Nabavke">
+              <PropertyRef Name="StatusNabavkeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Nabavke_TipNabavke">
+          <End Role="TipNabavke" Type="Self.TipNabavke" Multiplicity="1" />
+          <End Role="Nabavke" Type="Self.Nabavke" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipNabavke">
+              <PropertyRef Name="TipId" />
+            </Principal>
+            <Dependent Role="Nabavke">
+              <PropertyRef Name="TipId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NivoOdonravanjaTrebovanje_Trebovanje">
+          <End Role="Trebovanje" Type="Self.Trebovanje" Multiplicity="1" />
+          <End Role="DatumiOdobravanjaTrebovanje" Type="Self.DatumiOdobravanjaTrebovanje" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Trebovanje">
+              <PropertyRef Name="TrebovanjeId" />
+            </Principal>
+            <Dependent Role="DatumiOdobravanjaTrebovanje">
+              <PropertyRef Name="TrebovnajeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReferentNabavke_TipNabavke">
+          <End Role="TipNabavke" Type="Self.TipNabavke" Multiplicity="1" />
+          <End Role="ReferentNabavke" Type="Self.ReferentNabavke" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipNabavke">
+              <PropertyRef Name="TipId" />
+            </Principal>
+            <Dependent Role="ReferentNabavke">
+              <PropertyRef Name="TipNabavkeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trebovanje_Status">
+          <End Role="Status" Type="Self.Status" Multiplicity="1" />
+          <End Role="Trebovanje" Type="Self.Trebovanje" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="StatusId" />
+            </Principal>
+            <Dependent Role="Trebovanje">
+              <PropertyRef Name="StatusTrebovanjaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TrebovanjeVezna_RezervisaniArtikli">
+          <End Role="RezervisaniArtikli" Type="Self.RezervisaniArtikli" Multiplicity="1" />
+          <End Role="TrebovanjeVezna" Type="Self.TrebovanjeVezna" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RezervisaniArtikli">
+              <PropertyRef Name="ArtikalId" />
+            </Principal>
+            <Dependent Role="TrebovanjeVezna">
+              <PropertyRef Name="ArtikalId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TrebovanjeVezna_Status">
+          <End Role="Status" Type="Self.Status" Multiplicity="1" />
+          <End Role="TrebovanjeVezna" Type="Self.TrebovanjeVezna" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="StatusId" />
+            </Principal>
+            <Dependent Role="TrebovanjeVezna">
+              <PropertyRef Name="StatusArtiklaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TrebovanjeVezna_Trebovanje">
+          <End Role="Trebovanje" Type="Self.Trebovanje" Multiplicity="1" />
+          <End Role="TrebovanjeVezna" Type="Self.TrebovanjeVezna" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trebovanje">
+              <PropertyRef Name="TrebovanjeId" />
+            </Principal>
+            <Dependent Role="TrebovanjeVezna">
+              <PropertyRef Name="TrebovanjeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Trebovanje_i_NabavkeModelStoreContainer">
+          <EntitySet Name="DatumiOdobravanjaNabavke" EntityType="Self.DatumiOdobravanjaNabavke" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DatumiOdobravanjaTrebovanje" EntityType="Self.DatumiOdobravanjaTrebovanje" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Dokument" EntityType="Self.Dokument" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NabavkaVezna" EntityType="Self.NabavkaVezna" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Nabavke" EntityType="Self.Nabavke" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ReferentNabavke" EntityType="Self.ReferentNabavke" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RezervisaniArtikli" EntityType="Self.RezervisaniArtikli" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipNabavke" EntityType="Self.TipNabavke" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Trebovanje" EntityType="Self.Trebovanje" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TrebovanjeVezna" EntityType="Self.TrebovanjeVezna" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vInformacijeOArtiklu" EntityType="Self.vInformacijeOArtiklu" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vInformacijeOArtiklu].[ArtikalId] AS [ArtikalId], 
+    [vInformacijeOArtiklu].[Naziv] AS [Naziv], 
+    [vInformacijeOArtiklu].[KolicinaNaStanju] AS [KolicinaNaStanju], 
+    [vInformacijeOArtiklu].[Cijena] AS [Cijena]
+    FROM [dbo].[vInformacijeOArtiklu] AS [vInformacijeOArtiklu]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vRadnik" EntityType="Self.vRadnik" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vRadnik].[RadnikSifra] AS [RadnikSifra], 
+    [vRadnik].[Prezime] AS [Prezime], 
+    [vRadnik].[Ime] AS [Ime], 
+    [vRadnik].[KorisnickoIme] AS [KorisnickoIme], 
+    [vRadnik].[Email] AS [Email], 
+    [vRadnik].[Nivo1OdobravanjaSifra] AS [Nivo1OdobravanjaSifra], 
+    [vRadnik].[Nivo2OdobravanjaSifra] AS [Nivo2OdobravanjaSifra], 
+    [vRadnik].[Nivo3OdobravanjaSifra] AS [Nivo3OdobravanjaSifra], 
+    [vRadnik].[SektorSifra] AS [SektorSifra], 
+    [vRadnik].[RadnikUlogaId] AS [RadnikUlogaId], 
+    [vRadnik].[TimId] AS [TimId], 
+    [vRadnik].[NazivTima] AS [NazivTima], 
+    [vRadnik].[SifraLideraTima] AS [SifraLideraTima], 
+    [vRadnik].[NazivUloge] AS [NazivUloge], 
+    [vRadnik].[NazivSektora] AS [NazivSektora]
+    FROM [dbo].[vRadnik] AS [vRadnik]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_DatumiOdobravanjaNabavke_Nabavke" Association="Self.FK_DatumiOdobravanjaNabavke_Nabavke">
+            <End Role="Nabavke" EntitySet="Nabavke" />
+            <End Role="DatumiOdobravanjaNabavke" EntitySet="DatumiOdobravanjaNabavke" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Dokument_Nabavke" Association="Self.FK_Dokument_Nabavke">
+            <End Role="Nabavke" EntitySet="Nabavke" />
+            <End Role="Dokument" EntitySet="Dokument" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NabavkaVezna_Nabavke" Association="Self.FK_NabavkaVezna_Nabavke">
+            <End Role="Nabavke" EntitySet="Nabavke" />
+            <End Role="NabavkaVezna" EntitySet="NabavkaVezna" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Nabavke_Nabavke" Association="Self.FK_Nabavke_Nabavke">
+            <End Role="Nabavke" EntitySet="Nabavke" />
+            <End Role="Nabavke1" EntitySet="Nabavke" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Nabavke_Status" Association="Self.FK_Nabavke_Status">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="Nabavke" EntitySet="Nabavke" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Nabavke_TipNabavke" Association="Self.FK_Nabavke_TipNabavke">
+            <End Role="TipNabavke" EntitySet="TipNabavke" />
+            <End Role="Nabavke" EntitySet="Nabavke" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NivoOdonravanjaTrebovanje_Trebovanje" Association="Self.FK_NivoOdonravanjaTrebovanje_Trebovanje">
+            <End Role="Trebovanje" EntitySet="Trebovanje" />
+            <End Role="DatumiOdobravanjaTrebovanje" EntitySet="DatumiOdobravanjaTrebovanje" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReferentNabavke_TipNabavke" Association="Self.FK_ReferentNabavke_TipNabavke">
+            <End Role="TipNabavke" EntitySet="TipNabavke" />
+            <End Role="ReferentNabavke" EntitySet="ReferentNabavke" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trebovanje_Status" Association="Self.FK_Trebovanje_Status">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="Trebovanje" EntitySet="Trebovanje" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TrebovanjeVezna_RezervisaniArtikli" Association="Self.FK_TrebovanjeVezna_RezervisaniArtikli">
+            <End Role="RezervisaniArtikli" EntitySet="RezervisaniArtikli" />
+            <End Role="TrebovanjeVezna" EntitySet="TrebovanjeVezna" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TrebovanjeVezna_Status" Association="Self.FK_TrebovanjeVezna_Status">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="TrebovanjeVezna" EntitySet="TrebovanjeVezna" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TrebovanjeVezna_Trebovanje" Association="Self.FK_TrebovanjeVezna_Trebovanje">
+            <End Role="Trebovanje" EntitySet="Trebovanje" />
+            <End Role="TrebovanjeVezna" EntitySet="TrebovanjeVezna" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Trebovanje_i_NabavkeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="DatumiOdobravanjaNabavke">
+          <Key>
+            <PropertyRef Name="NabavkaId" />
+          </Key>
+          <Property Name="DatumOdobravanjaNivoa1" Type="DateTime" Precision="3" />
+          <Property Name="DatumOdobravanjaNivoa2" Type="DateTime" Precision="3" />
+          <Property Name="DatumOdobravanjaNivoa3" Type="DateTime" Precision="3" />
+          <Property Name="NabavkaId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Nabavke" Relationship="Trebovanje_i_NabavkeModel.FK_DatumiOdobravanjaNabavke_Nabavke" FromRole="DatumiOdobravanjaNabavke" ToRole="Nabavke" />
+        </EntityType>
+        <EntityType Name="DatumiOdobravanjaTrebovanje">
+          <Key>
+            <PropertyRef Name="TrebovnajeId" />
+          </Key>
+          <Property Name="DatumOdobravanjaNivoa1" Type="DateTime" Precision="3" />
+          <Property Name="DatumOdobravanjaNivoa3" Type="DateTime" Precision="3" />
+          <Property Name="TrebovnajeId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Trebovanje" Relationship="Self.FK_NivoOdonravanjaTrebovanje_Trebovanje" FromRole="DatumiOdobravanjaTrebovanje" ToRole="Trebovanje" />
+          <Property Name="DatumOdobravanjaNivoa2" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Dokument">
+          <Key>
+            <PropertyRef Name="DokumentId" />
+          </Key>
+          <Property Name="DokumentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Naziv" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NabavkaId" Type="Int32" Nullable="false" />
+          <Property Name="Dokument1" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <NavigationProperty Name="Nabavke" Relationship="Self.FK_Dokument_Nabavke" FromRole="Dokument" ToRole="Nabavke" />
+        </EntityType>
+        <EntityType Name="NabavkaVezna">
+          <Key>
+            <PropertyRef Name="NabavkaVeznaId" />
+          </Key>
+          <Property Name="NabavkaVeznaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NabavkaId" Type="Int32" Nullable="false" />
+          <Property Name="Opis" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Kolicina" Type="Int32" Nullable="false" />
+          <Property Name="Cijena" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="Dobavljac" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Nabavke" Relationship="Self.FK_NabavkaVezna_Nabavke" FromRole="NabavkaVezna" ToRole="Nabavke" />
+          <Property Name="StatusId" Type="Int32" />
+          <Property Name="ArtiklId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Nabavke">
+          <Key>
+            <PropertyRef Name="NabavkaId" />
+          </Key>
+          <Property Name="NabavkaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SifraRadnika" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="SifraReferentaNabavke" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="TipId" Type="Int32" Nullable="false" />
+          <Property Name="StatusNabavkeId" Type="Int32" Nullable="false" />
+          <Property Name="SerijskiBroj" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DatumPodnosenjaZahtjeva" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DatumRazmatranjaZahtjeva" Type="DateTime" Precision="3" />
+          <Property Name="DatumPreuzimanja" Type="DateTime" Precision="3" />
+          <Property Name="BrojDokumenata" Type="Int32" />
+          <Property Name="Obrazlozenja" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="NapomenaSefa" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="NapomenaReferentaNabavke" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="VezanaNabavkaId" Type="Int32" />
+          <Property Name="Odgovoran" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Dokuments" Relationship="Self.FK_Dokument_Nabavke" FromRole="Nabavke" ToRole="Dokument" />
+          <NavigationProperty Name="NabavkaVeznas" Relationship="Self.FK_NabavkaVezna_Nabavke" FromRole="Nabavke" ToRole="NabavkaVezna" />
+          <NavigationProperty Name="Nabavke1" Relationship="Self.FK_Nabavke_Nabavke" FromRole="Nabavke" ToRole="Nabavke1" />
+          <NavigationProperty Name="Nabavke2" Relationship="Self.FK_Nabavke_Nabavke" FromRole="Nabavke1" ToRole="Nabavke" />
+          <NavigationProperty Name="TipNabavke" Relationship="Self.FK_Nabavke_TipNabavke" FromRole="Nabavke" ToRole="TipNabavke" />
+          <NavigationProperty Name="vRadnik" Relationship="Trebovanje_i_NabavkeModel.vRadnikNabavke" FromRole="Nabavke" ToRole="vRadnik" />
+          <NavigationProperty Name="vRadnik1" Relationship="Trebovanje_i_NabavkeModel.vRadnikNabavke1" FromRole="Nabavke" ToRole="vRadnik" />
+          <NavigationProperty Name="Status" Relationship="Trebovanje_i_NabavkeModel.NabavkeStatus" FromRole="Nabavke" ToRole="Status" />
+          <NavigationProperty Name="DatumiOdobravanjaNabavke" Relationship="Trebovanje_i_NabavkeModel.FK_DatumiOdobravanjaNabavke_Nabavke" FromRole="Nabavke" ToRole="DatumiOdobravanjaNabavke" />
+        </EntityType>
+        <EntityType Name="ReferentNabavke">
+          <Key>
+            <PropertyRef Name="ReferentId" />
+          </Key>
+          <Property Name="ReferentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TipNabavkeId" Type="Int32" Nullable="false" />
+          <Property Name="SifraRadnika" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Napomena" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="TipNabavke" Relationship="Self.FK_ReferentNabavke_TipNabavke" FromRole="ReferentNabavke" ToRole="TipNabavke" />
+          <NavigationProperty Name="vRadnik" Relationship="Trebovanje_i_NabavkeModel.vRadnikReferentNabavke" FromRole="ReferentNabavke" ToRole="vRadnik" />
+        </EntityType>
+        <EntityType Name="RezervisaniArtikli">
+          <Key>
+            <PropertyRef Name="ArtikalId" />
+          </Key>
+          <Property Name="ArtikalId" Type="Int32" Nullable="false" />
+          <Property Name="TrenutnaKolicina" Type="Int32" Nullable="false" />
+          <Property Name="RezervisanaKolicina" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TrebovanjeVeznas" Relationship="Self.FK_TrebovanjeVezna_RezervisaniArtikli" FromRole="RezervisaniArtikli" ToRole="TrebovanjeVezna" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="StatusId" />
+          </Key>
+          <Property Name="StatusId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StatusNaziv" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Trebovanjes" Relationship="Self.FK_Trebovanje_Status" FromRole="Status" ToRole="Trebovanje" />
+          <NavigationProperty Name="TrebovanjeVeznas" Relationship="Self.FK_TrebovanjeVezna_Status" FromRole="Status" ToRole="TrebovanjeVezna" />
+          <NavigationProperty Name="Nabavke" Relationship="Trebovanje_i_NabavkeModel.NabavkeStatus" FromRole="Status" ToRole="Nabavke" />
+        </EntityType>
+        <EntityType Name="TipNabavke">
+          <Key>
+            <PropertyRef Name="TipId" />
+          </Key>
+          <Property Name="TipId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Naziv" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Nabavkes" Relationship="Self.FK_Nabavke_TipNabavke" FromRole="TipNabavke" ToRole="Nabavke" />
+          <NavigationProperty Name="ReferentNabavkes" Relationship="Self.FK_ReferentNabavke_TipNabavke" FromRole="TipNabavke" ToRole="ReferentNabavke" />
+        </EntityType>
+        <EntityType Name="Trebovanje">
+          <Key>
+            <PropertyRef Name="TrebovanjeId" />
+          </Key>
+          <Property Name="TrebovanjeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SifraRadnika" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="SerijskiBroj" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DatumPodnosenjaZahtjeva" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DatumZaduzenjaTrebovanja" Type="DateTime" Precision="3" />
+          <Property Name="NapomenaRadnika" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="NapomenaNadredjenog" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="StatusTrebovanjaId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="DatumiOdobravanjaTrebovanje" Relationship="Self.FK_NivoOdonravanjaTrebovanje_Trebovanje" FromRole="Trebovanje" ToRole="DatumiOdobravanjaTrebovanje" />
+          <NavigationProperty Name="Status" Relationship="Self.FK_Trebovanje_Status" FromRole="Trebovanje" ToRole="Status" />
+          <NavigationProperty Name="TrebovanjeVeznas" Relationship="Self.FK_TrebovanjeVezna_Trebovanje" FromRole="Trebovanje" ToRole="TrebovanjeVezna" />
+          <NavigationProperty Name="vRadniks" Relationship="Trebovanje_i_NabavkeModel.TrebovanjevRadnik" FromRole="Trebovanje" ToRole="vRadnik" />
+        </EntityType>
+        <EntityType Name="TrebovanjeVezna">
+          <Key>
+            <PropertyRef Name="TrebovanjeVeznaId" />
+          </Key>
+          <Property Name="TrebovanjeVeznaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ArtikalId" Type="Int32" Nullable="false" />
+          <Property Name="TrebovanjeId" Type="Int32" Nullable="false" />
+          <Property Name="StatusArtiklaId" Type="Int32" Nullable="false" />
+          <Property Name="TrebovanaKolicina" Type="Int32" Nullable="false" />
+          <Property Name="KolicinaKojaNedostaje" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="RezervisaniArtikli" Relationship="Self.FK_TrebovanjeVezna_RezervisaniArtikli" FromRole="TrebovanjeVezna" ToRole="RezervisaniArtikli" />
+          <NavigationProperty Name="Status" Relationship="Self.FK_TrebovanjeVezna_Status" FromRole="TrebovanjeVezna" ToRole="Status" />
+          <NavigationProperty Name="Trebovanje" Relationship="Self.FK_TrebovanjeVezna_Trebovanje" FromRole="TrebovanjeVezna" ToRole="Trebovanje" />
+          <NavigationProperty Name="vInformacijeOArtiklu" Relationship="Trebovanje_i_NabavkeModel.TrebovanjeVeznavInformacijeOArtiklu" FromRole="TrebovanjeVezna" ToRole="vInformacijeOArtiklu" />
+        </EntityType>
+        <EntityType Name="vInformacijeOArtiklu">
+          <Key>
+            <PropertyRef Name="ArtikalId" />
+          </Key>
+          <Property Name="ArtikalId" Type="Int32" Nullable="false" />
+          <Property Name="Naziv" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="KolicinaNaStanju" Type="Int32" Nullable="false" />
+          <Property Name="Cijena" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <NavigationProperty Name="TrebovanjeVeznas" Relationship="Trebovanje_i_NabavkeModel.TrebovanjeVeznavInformacijeOArtiklu" FromRole="vInformacijeOArtiklu" ToRole="TrebovanjeVezna" />
+        </EntityType>
+        <EntityType Name="vRadnik">
+          <Key>
+            <PropertyRef Name="RadnikSifra" />
+          </Key>
+          <Property Name="RadnikSifra" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Prezime" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Ime" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="KorisnickoIme" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nivo1OdobravanjaSifra" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="Nivo2OdobravanjaSifra" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="Nivo3OdobravanjaSifra" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="SektorSifra" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="RadnikUlogaId" Type="Byte" />
+          <Property Name="TimId" Type="Int32" />
+          <Property Name="NazivTima" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="SifraLideraTima" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="NazivUloge" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NazivSektora" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Trebovanje" Relationship="Trebovanje_i_NabavkeModel.TrebovanjevRadnik" FromRole="vRadnik" ToRole="Trebovanje" />
+          <NavigationProperty Name="NabavkeRadnika" Relationship="Trebovanje_i_NabavkeModel.vRadnikNabavke" FromRole="vRadnik" ToRole="Nabavke" />
+          <NavigationProperty Name="NabavkeReferent" Relationship="Trebovanje_i_NabavkeModel.vRadnikNabavke1" FromRole="vRadnik" ToRole="Nabavke" />
+          <NavigationProperty Name="ReferentNabavkes" Relationship="Trebovanje_i_NabavkeModel.vRadnikReferentNabavke" FromRole="vRadnik" ToRole="ReferentNabavke" />
+        </EntityType>
+        <Association Name="FK_NivoOdonravanjaTrebovanje_Trebovanje">
+          <End Role="Trebovanje" Type="Self.Trebovanje" Multiplicity="1" />
+          <End Role="DatumiOdobravanjaTrebovanje" Type="Self.DatumiOdobravanjaTrebovanje" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="Trebovanje">
+              <PropertyRef Name="TrebovanjeId" />
+            </Principal>
+            <Dependent Role="DatumiOdobravanjaTrebovanje">
+              <PropertyRef Name="TrebovnajeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Dokument_Nabavke">
+          <End Role="Nabavke" Type="Self.Nabavke" Multiplicity="1" />
+          <End Role="Dokument" Type="Self.Dokument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Nabavke">
+              <PropertyRef Name="NabavkaId" />
+            </Principal>
+            <Dependent Role="Dokument">
+              <PropertyRef Name="NabavkaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NabavkaVezna_Nabavke">
+          <End Role="Nabavke" Type="Self.Nabavke" Multiplicity="1" />
+          <End Role="NabavkaVezna" Type="Self.NabavkaVezna" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Nabavke">
+              <PropertyRef Name="NabavkaId" />
+            </Principal>
+            <Dependent Role="NabavkaVezna">
+              <PropertyRef Name="NabavkaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Nabavke_Nabavke">
+          <End Role="Nabavke" Type="Self.Nabavke" Multiplicity="0..1" />
+          <End Role="Nabavke1" Type="Self.Nabavke" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Nabavke">
+              <PropertyRef Name="NabavkaId" />
+            </Principal>
+            <Dependent Role="Nabavke1">
+              <PropertyRef Name="VezanaNabavkaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Nabavke_TipNabavke">
+          <End Role="TipNabavke" Type="Self.TipNabavke" Multiplicity="1" />
+          <End Role="Nabavke" Type="Self.Nabavke" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipNabavke">
+              <PropertyRef Name="TipId" />
+            </Principal>
+            <Dependent Role="Nabavke">
+              <PropertyRef Name="TipId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReferentNabavke_TipNabavke">
+          <End Role="TipNabavke" Type="Self.TipNabavke" Multiplicity="1" />
+          <End Role="ReferentNabavke" Type="Self.ReferentNabavke" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipNabavke">
+              <PropertyRef Name="TipId" />
+            </Principal>
+            <Dependent Role="ReferentNabavke">
+              <PropertyRef Name="TipNabavkeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TrebovanjeVezna_RezervisaniArtikli">
+          <End Role="RezervisaniArtikli" Type="Self.RezervisaniArtikli" Multiplicity="1" />
+          <End Role="TrebovanjeVezna" Type="Self.TrebovanjeVezna" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RezervisaniArtikli">
+              <PropertyRef Name="ArtikalId" />
+            </Principal>
+            <Dependent Role="TrebovanjeVezna">
+              <PropertyRef Name="ArtikalId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trebovanje_Status">
+          <End Role="Status" Type="Self.Status" Multiplicity="1" />
+          <End Role="Trebovanje" Type="Self.Trebovanje" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="StatusId" />
+            </Principal>
+            <Dependent Role="Trebovanje">
+              <PropertyRef Name="StatusTrebovanjaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TrebovanjeVezna_Status">
+          <End Role="Status" Type="Self.Status" Multiplicity="1" />
+          <End Role="TrebovanjeVezna" Type="Self.TrebovanjeVezna" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="StatusId" />
+            </Principal>
+            <Dependent Role="TrebovanjeVezna">
+              <PropertyRef Name="StatusArtiklaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TrebovanjeVezna_Trebovanje">
+          <End Role="Trebovanje" Type="Self.Trebovanje" Multiplicity="1" />
+          <End Role="TrebovanjeVezna" Type="Self.TrebovanjeVezna" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trebovanje">
+              <PropertyRef Name="TrebovanjeId" />
+            </Principal>
+            <Dependent Role="TrebovanjeVezna">
+              <PropertyRef Name="TrebovanjeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TrebovanjeNabavkeContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DatumiOdobravanjaNabavkes" EntityType="Self.DatumiOdobravanjaNabavke" />
+          <EntitySet Name="DatumiOdobravanjaTrebovanjes" EntityType="Self.DatumiOdobravanjaTrebovanje" />
+          <EntitySet Name="Dokuments" EntityType="Self.Dokument" />
+          <EntitySet Name="NabavkaVeznas" EntityType="Self.NabavkaVezna" />
+          <EntitySet Name="Nabavkes" EntityType="Self.Nabavke" />
+          <EntitySet Name="ReferentNabavkes" EntityType="Self.ReferentNabavke" />
+          <EntitySet Name="RezervisaniArtiklis" EntityType="Self.RezervisaniArtikli" />
+          <EntitySet Name="Status" EntityType="Self.Status" />
+          <EntitySet Name="TipNabavkes" EntityType="Self.TipNabavke" />
+          <EntitySet Name="Trebovanjes" EntityType="Self.Trebovanje" />
+          <EntitySet Name="TrebovanjeVeznas" EntityType="Self.TrebovanjeVezna" />
+          <EntitySet Name="vInformacijeOArtiklus" EntityType="Self.vInformacijeOArtiklu" />
+          <EntitySet Name="vRadniks" EntityType="Self.vRadnik" />
+          <AssociationSet Name="FK_NivoOdonravanjaTrebovanje_Trebovanje" Association="Self.FK_NivoOdonravanjaTrebovanje_Trebovanje">
+            <End Role="Trebovanje" EntitySet="Trebovanjes" />
+            <End Role="DatumiOdobravanjaTrebovanje" EntitySet="DatumiOdobravanjaTrebovanjes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Dokument_Nabavke" Association="Self.FK_Dokument_Nabavke">
+            <End Role="Nabavke" EntitySet="Nabavkes" />
+            <End Role="Dokument" EntitySet="Dokuments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NabavkaVezna_Nabavke" Association="Self.FK_NabavkaVezna_Nabavke">
+            <End Role="Nabavke" EntitySet="Nabavkes" />
+            <End Role="NabavkaVezna" EntitySet="NabavkaVeznas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Nabavke_Nabavke" Association="Self.FK_Nabavke_Nabavke">
+            <End Role="Nabavke" EntitySet="Nabavkes" />
+            <End Role="Nabavke1" EntitySet="Nabavkes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Nabavke_TipNabavke" Association="Self.FK_Nabavke_TipNabavke">
+            <End Role="TipNabavke" EntitySet="TipNabavkes" />
+            <End Role="Nabavke" EntitySet="Nabavkes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReferentNabavke_TipNabavke" Association="Self.FK_ReferentNabavke_TipNabavke">
+            <End Role="TipNabavke" EntitySet="TipNabavkes" />
+            <End Role="ReferentNabavke" EntitySet="ReferentNabavkes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TrebovanjeVezna_RezervisaniArtikli" Association="Self.FK_TrebovanjeVezna_RezervisaniArtikli">
+            <End Role="RezervisaniArtikli" EntitySet="RezervisaniArtiklis" />
+            <End Role="TrebovanjeVezna" EntitySet="TrebovanjeVeznas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trebovanje_Status" Association="Self.FK_Trebovanje_Status">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="Trebovanje" EntitySet="Trebovanjes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TrebovanjeVezna_Status" Association="Self.FK_TrebovanjeVezna_Status">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="TrebovanjeVezna" EntitySet="TrebovanjeVeznas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TrebovanjeVezna_Trebovanje" Association="Self.FK_TrebovanjeVezna_Trebovanje">
+            <End Role="Trebovanje" EntitySet="Trebovanjes" />
+            <End Role="TrebovanjeVezna" EntitySet="TrebovanjeVeznas" />
+          </AssociationSet>
+          <AssociationSet Name="TrebovanjeVeznavInformacijeOArtiklu" Association="Trebovanje_i_NabavkeModel.TrebovanjeVeznavInformacijeOArtiklu">
+            <End Role="TrebovanjeVezna" EntitySet="TrebovanjeVeznas" />
+            <End Role="vInformacijeOArtiklu" EntitySet="vInformacijeOArtiklus" />
+          </AssociationSet>
+          <AssociationSet Name="TrebovanjevRadnik" Association="Trebovanje_i_NabavkeModel.TrebovanjevRadnik">
+            <End Role="Trebovanje" EntitySet="Trebovanjes" />
+            <End Role="vRadnik" EntitySet="vRadniks" />
+          </AssociationSet>
+          <AssociationSet Name="vRadnikNabavke" Association="Trebovanje_i_NabavkeModel.vRadnikNabavke">
+            <End Role="vRadnik" EntitySet="vRadniks" />
+            <End Role="Nabavke" EntitySet="Nabavkes" />
+          </AssociationSet>
+          <AssociationSet Name="vRadnikNabavke1" Association="Trebovanje_i_NabavkeModel.vRadnikNabavke1">
+            <End Role="vRadnik" EntitySet="vRadniks" />
+            <End Role="Nabavke" EntitySet="Nabavkes" />
+          </AssociationSet>
+          <AssociationSet Name="vRadnikReferentNabavke" Association="Trebovanje_i_NabavkeModel.vRadnikReferentNabavke">
+            <End Role="vRadnik" EntitySet="vRadniks" />
+            <End Role="ReferentNabavke" EntitySet="ReferentNabavkes" />
+          </AssociationSet>
+          <AssociationSet Name="NabavkeStatus" Association="Trebovanje_i_NabavkeModel.NabavkeStatus">
+            <End Role="Nabavke" EntitySet="Nabavkes" />
+            <End Role="Status" EntitySet="Status" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DatumiOdobravanjaNabavke_Nabavke" Association="Trebovanje_i_NabavkeModel.FK_DatumiOdobravanjaNabavke_Nabavke">
+            <End Role="Nabavke" EntitySet="Nabavkes" />
+            <End Role="DatumiOdobravanjaNabavke" EntitySet="DatumiOdobravanjaNabavkes" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="TrebovanjeVeznavInformacijeOArtiklu">
+          <End Type="Trebovanje_i_NabavkeModel.TrebovanjeVezna" Role="TrebovanjeVezna" Multiplicity="*" />
+          <End Type="Trebovanje_i_NabavkeModel.vInformacijeOArtiklu" Role="vInformacijeOArtiklu" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="vInformacijeOArtiklu">
+              <PropertyRef Name="ArtikalId" />
+            </Principal>
+            <Dependent Role="TrebovanjeVezna">
+              <PropertyRef Name="ArtikalId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TrebovanjevRadnik">
+          <End Type="Trebovanje_i_NabavkeModel.Trebovanje" Role="Trebovanje" Multiplicity="*" />
+          <End Type="Trebovanje_i_NabavkeModel.vRadnik" Role="vRadnik" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="vRadnik">
+              <PropertyRef Name="RadnikSifra" />
+            </Principal>
+            <Dependent Role="Trebovanje">
+              <PropertyRef Name="SifraRadnika" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="vRadnikNabavke">
+          <End Type="Trebovanje_i_NabavkeModel.vRadnik" Role="vRadnik" Multiplicity="1" />
+          <End Type="Trebovanje_i_NabavkeModel.Nabavke" Role="Nabavke" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="vRadnik">
+              <PropertyRef Name="RadnikSifra" />
+            </Principal>
+            <Dependent Role="Nabavke">
+              <PropertyRef Name="SifraRadnika" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="vRadnikNabavke1">
+          <End Type="Trebovanje_i_NabavkeModel.vRadnik" Role="vRadnik" Multiplicity="0..1" />
+          <End Type="Trebovanje_i_NabavkeModel.Nabavke" Role="Nabavke" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="vRadnik">
+              <PropertyRef Name="RadnikSifra" />
+            </Principal>
+            <Dependent Role="Nabavke">
+              <PropertyRef Name="SifraReferentaNabavke" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="vRadnikReferentNabavke">
+          <End Type="Trebovanje_i_NabavkeModel.vRadnik" Role="vRadnik" Multiplicity="1" />
+          <End Type="Trebovanje_i_NabavkeModel.ReferentNabavke" Role="ReferentNabavke" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="vRadnik">
+              <PropertyRef Name="RadnikSifra" />
+            </Principal>
+            <Dependent Role="ReferentNabavke">
+              <PropertyRef Name="SifraRadnika" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="NabavkeStatus">
+          <End Type="Trebovanje_i_NabavkeModel.Nabavke" Role="Nabavke" Multiplicity="*" />
+          <End Type="Trebovanje_i_NabavkeModel.Status" Role="Status" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="StatusId" />
+            </Principal>
+            <Dependent Role="Nabavke">
+              <PropertyRef Name="StatusNabavkeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DatumiOdobravanjaNabavke_Nabavke">
+          <End Type="Trebovanje_i_NabavkeModel.Nabavke" Role="Nabavke" Multiplicity="1" />
+          <End Type="Trebovanje_i_NabavkeModel.DatumiOdobravanjaNabavke" Role="DatumiOdobravanjaNabavke" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Nabavke">
+              <PropertyRef Name="NabavkaId" />
+            </Principal>
+            <Dependent Role="DatumiOdobravanjaNabavke">
+              <PropertyRef Name="NabavkaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Trebovanje_i_NabavkeModelStoreContainer" CdmEntityContainer="TrebovanjeNabavkeContext">
+          <EntitySetMapping Name="DatumiOdobravanjaNabavkes">
+            <EntityTypeMapping TypeName="Trebovanje_i_NabavkeModel.DatumiOdobravanjaNabavke">
+              <MappingFragment StoreEntitySet="DatumiOdobravanjaNabavke">
+                <ScalarProperty Name="DatumOdobravanjaNivoa1" ColumnName="DatumOdobravanjaNivoa1" />
+                <ScalarProperty Name="DatumOdobravanjaNivoa2" ColumnName="DatumOdobravanjaNivoa2" />
+                <ScalarProperty Name="DatumOdobravanjaNivoa3" ColumnName="DatumOdobravanjaNivoa3" />
+                <ScalarProperty Name="NabavkaId" ColumnName="NabavkaId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DatumiOdobravanjaTrebovanjes">
+            <EntityTypeMapping TypeName="Trebovanje_i_NabavkeModel.DatumiOdobravanjaTrebovanje">
+              <MappingFragment StoreEntitySet="DatumiOdobravanjaTrebovanje">
+                <ScalarProperty Name="DatumOdobravanjaNivoa2" ColumnName="DatumOdobravanjaNivoa2" />
+                <ScalarProperty Name="DatumOdobravanjaNivoa1" ColumnName="DatumOdobravanjaNivoa1" />
+                <ScalarProperty Name="DatumOdobravanjaNivoa3" ColumnName="DatumOdobravanjaNivoa3" />
+                <ScalarProperty Name="TrebovnajeId" ColumnName="TrebovnajeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Dokuments">
+            <EntityTypeMapping TypeName="Trebovanje_i_NabavkeModel.Dokument">
+              <MappingFragment StoreEntitySet="Dokument">
+                <ScalarProperty Name="DokumentId" ColumnName="DokumentId" />
+                <ScalarProperty Name="Naziv" ColumnName="Naziv" />
+                <ScalarProperty Name="NabavkaId" ColumnName="NabavkaId" />
+                <ScalarProperty Name="Dokument1" ColumnName="Dokument" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NabavkaVeznas">
+            <EntityTypeMapping TypeName="Trebovanje_i_NabavkeModel.NabavkaVezna">
+              <MappingFragment StoreEntitySet="NabavkaVezna">
+                <ScalarProperty Name="ArtiklId" ColumnName="ArtiklId" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="NabavkaVeznaId" ColumnName="NabavkaVeznaId" />
+                <ScalarProperty Name="NabavkaId" ColumnName="NabavkaId" />
+                <ScalarProperty Name="Opis" ColumnName="Opis" />
+                <ScalarProperty Name="Kolicina" ColumnName="Kolicina" />
+                <ScalarProperty Name="Cijena" ColumnName="Cijena" />
+                <ScalarProperty Name="Dobavljac" ColumnName="Dobavljac" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Nabavkes">
+            <EntityTypeMapping TypeName="Trebovanje_i_NabavkeModel.Nabavke">
+              <MappingFragment StoreEntitySet="Nabavke">
+                <ScalarProperty Name="NabavkaId" ColumnName="NabavkaId" />
+                <ScalarProperty Name="SifraRadnika" ColumnName="SifraRadnika" />
+                <ScalarProperty Name="SifraReferentaNabavke" ColumnName="SifraReferentaNabavke" />
+                <ScalarProperty Name="TipId" ColumnName="TipId" />
+                <ScalarProperty Name="StatusNabavkeId" ColumnName="StatusNabavkeId" />
+                <ScalarProperty Name="SerijskiBroj" ColumnName="SerijskiBroj" />
+                <ScalarProperty Name="DatumPodnosenjaZahtjeva" ColumnName="DatumPodnosenjaZahtjeva" />
+                <ScalarProperty Name="DatumRazmatranjaZahtjeva" ColumnName="DatumRazmatranjaZahtjeva" />
+                <ScalarProperty Name="DatumPreuzimanja" ColumnName="DatumPreuzimanja" />
+                <ScalarProperty Name="BrojDokumenata" ColumnName="BrojDokumenata" />
+                <ScalarProperty Name="Obrazlozenja" ColumnName="Obrazlozenja" />
+                <ScalarProperty Name="NapomenaSefa" ColumnName="NapomenaSefa" />
+                <ScalarProperty Name="NapomenaReferentaNabavke" ColumnName="NapomenaReferentaNabavke" />
+                <ScalarProperty Name="VezanaNabavkaId" ColumnName="VezanaNabavkaId" />
+                <ScalarProperty Name="Odgovoran" ColumnName="Odgovoran" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReferentNabavkes">
+            <EntityTypeMapping TypeName="Trebovanje_i_NabavkeModel.ReferentNabavke">
+              <MappingFragment StoreEntitySet="ReferentNabavke">
+                <ScalarProperty Name="ReferentId" ColumnName="ReferentId" />
+                <ScalarProperty Name="TipNabavkeId" ColumnName="TipNabavkeId" />
+                <ScalarProperty Name="SifraRadnika" ColumnName="SifraRadnika" />
+                <ScalarProperty Name="Napomena" ColumnName="Napomena" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RezervisaniArtiklis">
+            <EntityTypeMapping TypeName="Trebovanje_i_NabavkeModel.RezervisaniArtikli">
+              <MappingFragment StoreEntitySet="RezervisaniArtikli">
+                <ScalarProperty Name="ArtikalId" ColumnName="ArtikalId" />
+                <ScalarProperty Name="TrenutnaKolicina" ColumnName="TrenutnaKolicina" />
+                <ScalarProperty Name="RezervisanaKolicina" ColumnName="RezervisanaKolicina" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Status">
+            <EntityTypeMapping TypeName="Trebovanje_i_NabavkeModel.Status">
+              <MappingFragment StoreEntitySet="Status">
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="StatusNaziv" ColumnName="StatusNaziv" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipNabavkes">
+            <EntityTypeMapping TypeName="Trebovanje_i_NabavkeModel.TipNabavke">
+              <MappingFragment StoreEntitySet="TipNabavke">
+                <ScalarProperty Name="TipId" ColumnName="TipId" />
+                <ScalarProperty Name="Naziv" ColumnName="Naziv" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Trebovanjes">
+            <EntityTypeMapping TypeName="Trebovanje_i_NabavkeModel.Trebovanje">
+              <MappingFragment StoreEntitySet="Trebovanje">
+                <ScalarProperty Name="TrebovanjeId" ColumnName="TrebovanjeId" />
+                <ScalarProperty Name="SifraRadnika" ColumnName="SifraRadnika" />
+                <ScalarProperty Name="SerijskiBroj" ColumnName="SerijskiBroj" />
+                <ScalarProperty Name="DatumPodnosenjaZahtjeva" ColumnName="DatumPodnosenjaZahtjeva" />
+                <ScalarProperty Name="DatumZaduzenjaTrebovanja" ColumnName="DatumZaduzenjaTrebovanja" />
+                <ScalarProperty Name="NapomenaRadnika" ColumnName="NapomenaRadnika" />
+                <ScalarProperty Name="NapomenaNadredjenog" ColumnName="NapomenaNadredjenog" />
+                <ScalarProperty Name="StatusTrebovanjaId" ColumnName="StatusTrebovanjaId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TrebovanjeVeznas">
+            <EntityTypeMapping TypeName="Trebovanje_i_NabavkeModel.TrebovanjeVezna">
+              <MappingFragment StoreEntitySet="TrebovanjeVezna">
+                <ScalarProperty Name="TrebovanjeVeznaId" ColumnName="TrebovanjeVeznaId" />
+                <ScalarProperty Name="ArtikalId" ColumnName="ArtikalId" />
+                <ScalarProperty Name="TrebovanjeId" ColumnName="TrebovanjeId" />
+                <ScalarProperty Name="StatusArtiklaId" ColumnName="StatusArtiklaId" />
+                <ScalarProperty Name="TrebovanaKolicina" ColumnName="TrebovanaKolicina" />
+                <ScalarProperty Name="KolicinaKojaNedostaje" ColumnName="KolicinaKojaNedostaje" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vInformacijeOArtiklus">
+            <EntityTypeMapping TypeName="Trebovanje_i_NabavkeModel.vInformacijeOArtiklu">
+              <MappingFragment StoreEntitySet="vInformacijeOArtiklu">
+                <ScalarProperty Name="ArtikalId" ColumnName="ArtikalId" />
+                <ScalarProperty Name="Naziv" ColumnName="Naziv" />
+                <ScalarProperty Name="KolicinaNaStanju" ColumnName="KolicinaNaStanju" />
+                <ScalarProperty Name="Cijena" ColumnName="Cijena" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vRadniks">
+            <EntityTypeMapping TypeName="Trebovanje_i_NabavkeModel.vRadnik">
+              <MappingFragment StoreEntitySet="vRadnik">
+                <ScalarProperty Name="RadnikSifra" ColumnName="RadnikSifra" />
+                <ScalarProperty Name="Prezime" ColumnName="Prezime" />
+                <ScalarProperty Name="Ime" ColumnName="Ime" />
+                <ScalarProperty Name="KorisnickoIme" ColumnName="KorisnickoIme" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Nivo1OdobravanjaSifra" ColumnName="Nivo1OdobravanjaSifra" />
+                <ScalarProperty Name="Nivo2OdobravanjaSifra" ColumnName="Nivo2OdobravanjaSifra" />
+                <ScalarProperty Name="Nivo3OdobravanjaSifra" ColumnName="Nivo3OdobravanjaSifra" />
+                <ScalarProperty Name="SektorSifra" ColumnName="SektorSifra" />
+                <ScalarProperty Name="RadnikUlogaId" ColumnName="RadnikUlogaId" />
+                <ScalarProperty Name="TimId" ColumnName="TimId" />
+                <ScalarProperty Name="NazivTima" ColumnName="NazivTima" />
+                <ScalarProperty Name="SifraLideraTima" ColumnName="SifraLideraTima" />
+                <ScalarProperty Name="NazivUloge" ColumnName="NazivUloge" />
+                <ScalarProperty Name="NazivSektora" ColumnName="NazivSektora" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

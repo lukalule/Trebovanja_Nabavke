@@ -1,0 +1,210 @@
+﻿@model IPagedList<TrebovanjaNarudzbe.Web.ViewModels.NabavkaViewModel>
+
+@{
+    ViewBag.Title = "AktivneNabavke";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Naslov = "Skladište > Aktivne nabavke";
+
+}
+
+<style>
+    .searchContainer {
+        display: inline-flex;
+        flex: 1 1 300px;
+        position: relative;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .searchIcon {
+        padding: 0.5rem;
+    }
+
+    .searchBox {
+        border: 0;
+        padding: 0.5rem 0.5rem 0.5rem 0;
+        flex: 1;
+    }
+
+    .searchButton {
+        background: #538AC5;
+        border: 0;
+        color: white;
+        padding: 0.5rem;
+        border-radius: 0;
+    }
+
+    .margina {
+        margin-bottom: 50px;
+    }
+
+    .textNaslov {
+        font-size: 1.1rem
+    }
+
+    .textDatum {
+        font-size: 1.1rem
+    }
+
+    .paddingJumbotron {
+        padding: 2rem 2rem;
+    }
+
+    .pozadinaTabele {
+        background-color: #538AC5;
+        color: white;
+        font-size: 15px;
+    }
+
+    .pozadina {
+        background-color: #ffde7b6e;
+    }
+</style>
+
+@using X.PagedList.Mvc; @*//import this so we get our HTML Helper*@
+@using X.PagedList; @*//import this so we can cast our list to IPagedList (only necessary because ViewBag is dynamic)*@
+
+
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 mb-4">
+
+            <a class="btn btn-outline-primary btn-lg" data-toggle="collapse" href="#filter" role="button" aria-expanded="false" aria-controls="filter"><i class="fas fa-filter"></i>Prikaži filter</a>
+
+        </div>
+        <div class="col-md-6">
+            <div class="btn-toolbar float-right" role="toolbar">
+                <div class="btn-group " role="group" aria-label="First group">
+
+                    <button type="button" class="btn  btn-outline-primary active" data-toggle="tooltip" data-placement="top" title="Prikaži listu"><i class="fa fa-list" aria-hidden="true"></i></button>
+                    <a href="@Url.Action("TabelarniPrikazAktivneNabavke", "Skladiste")" data-toggle="tooltip" data-placement="top" title="Tabelarni prikaz" class="btn  btn-outline-primary">
+                        <i class="fa fa-table" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Partial("_Filter")
+    <div class="row">
+        <div class="col-md-12 margina">
+            @foreach (var item in Model)
+            {
+
+                <div id="@item.NabavkaId" class="col-md-12 jumbotron bg-white paddingJumbotron shadow-lg rounded mb-5 mt-5">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h2 class="textNaslov"><span style="font-weight:normal;">Nabavka:</span> @item.SerijskiBroj </h2>
+                            <h2 class="display-4 textNaslov">Poručilac: <span class="font-weight-bold">@item.ImeIPrezimeRadnika</span></h2>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <h2 class="textDatum">Datum podnošenja zahtjeva:<br /> @item.DatumPodnosenjaZahtjeva.ToString("dd. MM. yyyy.")</h2>
+                        </div>
+
+                    </div>
+                    <hr class="my-4">
+                    <span class="list-group-item pozadinaTabele">Artikli:</span>
+                    <ul class="list-group font-weight-bolder">
+                        @foreach (var artikl in item.Stavke)
+                        {
+                            //if provjera ako je item preuzet da se doda zelena bg na li
+                            <li class="list-group-item @if (artikl.Preuzeto) { <text>list-group-item-success</text> } else if(artikl.Spremno){<text>pozadina</text> } " rel="@artikl.NabavkaVeznaId">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        Opis: <span class="font-weight-bolder">@artikl.Opis</span>
+                                        <br /> Količina:  &nbsp;<span class="font-weight-bolder">@artikl.Kolicina</span>
+                                        <br /> Dobavljač:  &nbsp;<span class="font-weight-bolder">@artikl.Dobavljac</span>
+                                    </div>
+                                    @*provjera ako je artikl cekiran cekiraj checkbox*@
+                                    <div class="col-md-5 text-right mr-1">
+                                        @if (artikl.Spremno)
+                                        {
+
+                                            <input class="SpremnoCheckBox mr-1" type="checkbox" name="checkBoxSpremno" checked><span class="mr-4">Spremno</span>
+                                        }
+                                        else
+                                        { <input class="SpremnoCheckBox mr-1" type="checkbox" name="checkBoxSpremno"><span class="mr-4">Spremno</span>}
+                                        @if (artikl.Preuzeto)
+                                        {
+                                            <input class="PreuzetoCheckBox  mr-1" type="checkbox" name="checkBoxPreuzeto" checked><span>Preuzeto</span>
+                                        }
+                                        else
+                                        { <input class="PreuzetoCheckBox  mr-1" type="checkbox" name="checkBoxPreuzeto"><span>Preuzeto</span>}
+                                    </div>
+                                </div>
+                            </li>
+
+                        }
+
+                    </ul>
+
+                    <div class="col-md-12">
+                        <hr class="my-4">
+                        <div class="row text-center">
+                            @foreach (var dokument in item.Dokumenti)
+                            {
+                                string ekstenzija = dokument.FileName.Split('.').LastOrDefault().ToLower();
+                                <div class="class='col-md-2 m-2">
+                                    <a href="@Url.Action("PreuzimanjeDokumenta","Nabavke", new { dokumentId = @dokument.DokumentId })">
+                                        @if (ekstenzija == "pdf")
+                                        {
+                                            <img class="img-ikone" style="width:35px; height:auto;" src="/Content/img/pdf-1.png" />
+                                        }
+                                        else if (ekstenzija == "png" || ekstenzija == "jpg" || ekstenzija == "jpeg" || ekstenzija == "gif")
+                                        {
+                                            <img class="img-ikone" style="width:35px; height:auto;" src="/Content/img/polaroid-1.png" />
+                                        }
+                                        else if (ekstenzija == "docx")
+                                        {
+                                            <img class="img-ikone" style="width:35px; height:auto;" src="/Content/img/word-1.png" />
+                                        }
+                                        else if (ekstenzija == "xlsx")
+                                        {
+                                            <img class="img-ikone" style="width:35px; height:auto;" src="/Content/img/excel.png" />
+                                        }
+                                        else
+                                        {
+                                            <img class="img-ikone" style="width:35px; height:auto;" src="/Content/img/default.png" />
+                                        }
+                                        <span class="text-muted text-truncate ikone" style="width:100px;">@dokument.FileName</span>
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="text-right">
+                        <hr class="my-4">
+                        <button type="button" value="@item.NabavkaId" class="btnSacuvajIzmjene btn btn-outline-primary btn-lg"><i class="fas fa-save" style="font-size:15pt;"></i>Sačuvaj</button>
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
+
+
+    <div class="row h-100 justify-content-center align-items-center p-5">
+        @Html.PagedListPager((IPagedList)Model.Select(x => x.Stavke), page => Url.Action("FilterNabavke", new { SortiranjePoImenu = ViewBag.SortiranjePoImenu, SortiranjeDatum = ViewBag.SortiranjeDatum, page }))
+    </div>
+
+</div>
+
+    <!--modal koji ima loader u sebi-->
+    <div class="modal modal-backdrop fade" id="loader" tabindex="-1" role="dialog" aria-labelledby="loaderModal" aria-hidden="true">
+        <div class="modal-dialog" role="document" style="top:22%">
+            <div class="cssload-loader">
+                <div class="cssload-inner cssload-one"></div>
+                <div class="cssload-inner cssload-two"></div>
+                <div class="cssload-inner cssload-three"></div>
+            </div>
+        </div>
+    </div>
+
+@section scripts{
+    <script src="~/Scripts/Skripte/AktivneNabavkeZaSkladiste.js"></script>
+}
+

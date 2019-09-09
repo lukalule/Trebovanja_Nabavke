@@ -1,0 +1,196 @@
+﻿@model TrebovanjaNarudzbe.Web.ViewModels.TrebovanjeViewModel
+
+<style>
+    .pozadina {
+        background-color: #ffde7b6e;
+    }
+
+    .pozadina2 {
+        background-color: red;
+    }
+</style>
+
+<div class="col-md-12">
+    <div class="jumbotron shadow-lg rounded mb-5  p-4 bg-white">
+        <div class="row">
+            <div class="col-md-3">
+                <h5>Serijski broj: @Model.SerijskiBroj</h5>
+
+                <h5>Poručilac: @Model.ImeIPrezimeRadnika</h5>
+
+                <h5>Datum podnošenja zahtjeva: @Model.DatumPodnesenogZahtjeva.ToString("dd. MMM yyyy")</h5>
+                @if (Model.DatumZaduzenjaTrebovanja != null)
+                {
+                    <h5 class="font-weight-bolder">Datum zaduženja trebovanja: @(((DateTime)Model.DatumZaduzenjaTrebovanja).ToString("dd. MMM yyyy"))</h5>
+                }
+
+
+                <h5>
+                    Status trebovanja: <span class="status"> @Model.NazivStatusa </span>
+                    @if (Model.NazivStatusa == "Odobreno")
+                    {
+                        <span class="dot" style=" background-color:green"></span>
+                    }
+                    else if (Model.NazivStatusa == "Odbijeno")
+                    {
+                        <span class="dot" style="background-color:red;"></span>
+                    }
+                    else if (Model.NazivStatusa == "Preuzeto")
+                    {
+                        <span class="dot" style=" background-color:#00537a"></span>
+                    }
+                    else
+                    {
+                        <span class="dot" style=" background-color:#daa226"></span>
+                    }
+
+                </h5>
+            </div>
+
+
+
+
+            <div class="col-md-9">
+                <div class="widget has-shadow">
+
+                    <div class="widget-body-no-padding">
+                        <div class="table-responsive">
+                            <table class="table mb-0 table-bordered">
+                                <thead class="bg-primary text-white">
+                                    <tr style="background-color:#538AC5;">
+                                        <th>Šifra artikla</th>
+                                        <th>Naziv artikla</th>
+                                        <th>Tražena količina</th>
+                                        <th>Spremno</th>
+                                        <th>Preuzeto</th>
+                                    </tr>
+                                </thead>
+                                @for (int i = 0; i < Model.ListaArtikalaTrebovanja.Count(); i++)
+                                {
+                                    <tbody>
+                                        @if (i % 2 == 0)
+                                        {
+                                            <tr class="bg-white  @if (Model.ListaArtikalaTrebovanja[i].Preuzeto) { <text>table-success</text> } else if (Model.ListaArtikalaTrebovanja[i].Spremno) {<text>table-warning</text> } ">
+                                                <td>@Model.ListaArtikalaTrebovanja[i].ArtiklId</td>
+                                                <td>@Model.ListaArtikalaTrebovanja[i].Naziv</td>
+                                                <td>@Model.ListaArtikalaTrebovanja[i].TrebovanaKolicina</td>
+                                                @if (Model.ListaArtikalaTrebovanja[i].Spremno)
+                                                {
+                                                    <td>
+                                                        <input class="SpremnoCheckBox" type="checkbox" name="checkBoxSpremno" checked disabled>
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td>
+                                                        <input class="SpremnoCheckBox" type="checkbox" name="checkBoxSpremno" disabled>
+                                                    </td>
+                                                }
+                                                @if (Model.ListaArtikalaTrebovanja[i].Preuzeto)
+                                                {
+                                                    <td>
+                                                        <input class="PreuzetoCheckBox" type="checkbox" name="checkBoxPreuzeto" checked disabled>
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td>
+                                                        <input class="PreuzetoCheckBox" type="checkbox" name="checkBoxPreuzeto" disabled>
+                                                    </td>
+                                                }
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            <tr class="bg-light  @if (Model.ListaArtikalaTrebovanja[i].Preuzeto) { <text>table-success</text> } else if (Model.ListaArtikalaTrebovanja[i].Spremno) {<text>table-warning</text> } ">
+                                                <td>@Model.ListaArtikalaTrebovanja[i].ArtiklId</td>
+                                                <td>@Model.ListaArtikalaTrebovanja[i].Naziv</td>
+                                                <td>@Model.ListaArtikalaTrebovanja[i].TrebovanaKolicina</td>
+                                                @if (Model.ListaArtikalaTrebovanja[i].Spremno)
+                                                {
+                                                    <td>
+                                                        <input class="SpremnoCheckBox" type="checkbox" name="checkBoxSpremno" checked disabled>
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td>
+                                                        <input class="SpremnoCheckBox" type="checkbox" name="checkBoxSpremno" disabled>
+                                                    </td>
+                                                }
+                                                @if (Model.ListaArtikalaTrebovanja[i].Preuzeto)
+                                                {
+                                                    <td>
+                                                        <input class="PreuzetoCheckBox" type="checkbox" name="checkBoxPreuzeto" checked disabled>
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td>
+                                                        <input class="PreuzetoCheckBox" type="checkbox" name="checkBoxPreuzeto" disabled>
+                                                    </td>
+                                                }
+                                            </tr>
+                                        }
+                                    </tbody>
+                                }
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        @if (Model.NapomenaRadnika == "")
+                        {
+
+                        }
+                        else
+                        {
+                            <button class="btn btn-outline-info mr-1 mb-2" type="button" data-toggle="collapse" data-target="#NapomenaRadnika_@Model.TrebovanjeId"
+                                    aria-expanded="false" aria-controls="NapomenaRadnika_@Model.TrebovanjeId">
+                                <i class="la la-question-circle"></i>  Napomena radnika
+                            </button>
+                        }
+
+
+                        <div class="collapse multi-collapse" id="NapomenaRadnika_@Model.TrebovanjeId">
+                            <div class="card card-body border border-dark font-weight-bolder p-2 m-1">
+                                <p style="white-space: pre-line; color:#000000; background-color:white; ">@Model.NapomenaRadnika</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-6  dugmeLijevo">
+                        @if (Model.NapomenaNadredjenog == "")
+                        {
+
+                        }
+                        else
+                        {
+
+                            <button class="btn btn-outline-info mr-1 mb-2 " type="button" data-toggle="collapse" data-target="#NapomenaNadredjenog_@Model.TrebovanjeId"
+                                    aria-expanded="false" aria-controls="NapomenaNadredjenog_@Model.TrebovanjeId">
+                                <i class="la la-question-circle"></i>  Napomena nadređenog
+                            </button>
+                        }
+
+
+
+                        <div class="collapse multi-collapse" id="NapomenaNadredjenog_@Model.TrebovanjeId">
+                            <div class="card card-body border border-dark font-weight-bolder p-2 m-1">
+                                <p style="white-space: pre-line; color:#000000; background-color:white;"> @Model.NapomenaNadredjenog</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

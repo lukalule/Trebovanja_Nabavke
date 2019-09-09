@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="952c9b34ad7a46c192f26b127177dea2" Name="Diagram1" ZoomLevel="82">
+        <EntityTypeShape EntityType="Trebovanje_i_NabavkeModel.DatumiOdobravanjaNabavke" Width="2.375" PointX="4.5" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Trebovanje_i_NabavkeModel.DatumiOdobravanjaTrebovanje" Width="2.375" PointX="9" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Trebovanje_i_NabavkeModel.Dokument" Width="1.5" PointX="2.625" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Trebovanje_i_NabavkeModel.NabavkaVezna" Width="1.5" PointX="2.5" PointY="11" IsExpanded="true" />
+        <EntityTypeShape EntityType="Trebovanje_i_NabavkeModel.Nabavke" Width="2" PointX="4.625" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Trebovanje_i_NabavkeModel.ReferentNabavke" Width="2.125" PointX="4.625" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="Trebovanje_i_NabavkeModel.RezervisaniArtikli" Width="2.25" PointX="13.125" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Trebovanje_i_NabavkeModel.Status" Width="1.5" PointX="10.375" PointY="12.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Trebovanje_i_NabavkeModel.TipNabavke" Width="1.5" PointX="2.375" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Trebovanje_i_NabavkeModel.Trebovanje" Width="1.5" PointX="10" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Trebovanje_i_NabavkeModel.TrebovanjeVezna" Width="3.75" PointX="12" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Trebovanje_i_NabavkeModel.vInformacijeOArtiklu" Width="2.125" PointX="16.125" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Trebovanje_i_NabavkeModel.vRadnik" Width="1.5" PointX="7.375" PointY="7.125" IsExpanded="true" />
+        <AssociationConnector Association="Trebovanje_i_NabavkeModel.FK_NivoOdonravanjaTrebovanje_Trebovanje" ManuallyRouted="false" />
+        <AssociationConnector Association="Trebovanje_i_NabavkeModel.FK_Dokument_Nabavke" ManuallyRouted="false" />
+        <AssociationConnector Association="Trebovanje_i_NabavkeModel.FK_NabavkaVezna_Nabavke" ManuallyRouted="false" />
+        <AssociationConnector Association="Trebovanje_i_NabavkeModel.FK_Nabavke_Nabavke" ManuallyRouted="false" />
+        <AssociationConnector Association="Trebovanje_i_NabavkeModel.FK_Nabavke_TipNabavke" ManuallyRouted="false" />
+        <AssociationConnector Association="Trebovanje_i_NabavkeModel.FK_ReferentNabavke_TipNabavke" ManuallyRouted="false" />
+        <AssociationConnector Association="Trebovanje_i_NabavkeModel.FK_TrebovanjeVezna_RezervisaniArtikli" ManuallyRouted="false" />
+        <AssociationConnector Association="Trebovanje_i_NabavkeModel.FK_Trebovanje_Status" ManuallyRouted="false" />
+        <AssociationConnector Association="Trebovanje_i_NabavkeModel.FK_TrebovanjeVezna_Status" ManuallyRouted="false" />
+        <AssociationConnector Association="Trebovanje_i_NabavkeModel.FK_TrebovanjeVezna_Trebovanje" ManuallyRouted="false" />
+        <AssociationConnector Association="Trebovanje_i_NabavkeModel.TrebovanjeVeznavInformacijeOArtiklu" />
+        <AssociationConnector Association="Trebovanje_i_NabavkeModel.TrebovanjevRadnik" />
+        <AssociationConnector Association="Trebovanje_i_NabavkeModel.vRadnikNabavke" />
+        <AssociationConnector Association="Trebovanje_i_NabavkeModel.vRadnikNabavke1" />
+        <AssociationConnector Association="Trebovanje_i_NabavkeModel.vRadnikReferentNabavke" />
+        <AssociationConnector Association="Trebovanje_i_NabavkeModel.NabavkeStatus" />
+        <AssociationConnector Association="Trebovanje_i_NabavkeModel.FK_DatumiOdobravanjaNabavke_Nabavke" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

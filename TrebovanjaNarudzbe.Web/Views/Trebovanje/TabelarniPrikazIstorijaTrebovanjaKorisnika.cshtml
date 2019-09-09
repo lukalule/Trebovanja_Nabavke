@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.Title = "Tabelarni prikaz trebovanja";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Naslov = "Trebovanje > Tabelarni prikaz trebovanja";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="btn-toolbar float-right" role="toolbar">
+                <div class="btn-group " role="group" aria-label="First group">
+                    <a href="@Url.Action("IstorijaTrebovanjaKorisnika", "Trebovanje")" class="btn  btn-outline-primary">
+                        <i class="fa fa-list" aria-hidden="true"></i>
+                    </a>
+                    <button type="button" class="btn  btn-outline-primary active"><i class="fa fa-table" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <table id="TabelarniPrikaz" class="display table table-bordered bg-white" style="width:100%">
+                <thead>
+                    <tr class=" text-white" style="background-color:#538ac5">
+                        <th>Serijski broj</th>
+                        <th>Status trebovanja</th>
+                        <th>Ime i prezime radnika</th>
+                        <th>Datum podnesenog zahtjeva</th>
+                        <th>Poručeni artikli</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <script src="~/Scripts/DataTables/TabelarniPrikazIstorijaTrebovanjaKorisnika.js"></script>
+}

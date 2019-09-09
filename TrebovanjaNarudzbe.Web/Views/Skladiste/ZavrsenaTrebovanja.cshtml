@@ -1,0 +1,46 @@
+﻿@model IPagedList<TrebovanjaNarudzbe.Web.ViewModels.TrebovanjeViewModel>
+
+@{
+    ViewBag.Title = "Završena Trebovanja";
+    ViewBag.Naslov = "Skladište > Završena trebovanja";
+
+}
+@using X.PagedList.Mvc; @*//import this so we get our HTML Helper*@
+@using X.PagedList; @*//import this so we can cast our list to IPagedList (only necessary because ViewBag is dynamic)*@
+
+
+<div class="container">
+    <div class="row margina">
+        <div class="col-md-6">
+            <a class="btn btn-outline-primary btn-lg" data-toggle="collapse" href="#filter" role="button" aria-expanded="false" aria-controls="filter"><i class="fas fa-filter"></i>Prikaži filter</a>
+        </div>
+        <div class="col-md-6 ">
+            <div class="btn-toolbar float-right" role="toolbar">
+                <div class="btn-group " role="group" aria-label="First group">
+                    <button type="button" class="btn  btn-outline-primary active" data-toggle="tooltip" data-placement="top" title="Prikaži listu"><i class="fa fa-list" aria-hidden="true"></i></button>
+                    <a href="@Url.Action("TabelarniPrikazZavrsenihTrebovanja", "Skladiste")" data-toggle="tooltip" data-placement="top" title="Tabelarni prikaz" class="btn  btn-outline-primary">
+                        <i class="fa fa-table" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Partial("_Filter")
+    <div class="row">
+        <div class="col-md-12 margina">
+            @foreach (var item in Model)
+            {
+                @Html.Partial("_ZavrsenaTrebovanjaPartial", item);
+            }
+        </div>
+    </div>
+    @*//postavljanje paginacije na centar ekrana*@
+    <div class="row h-100 justify-content-center align-items-center p-5">
+        @Html.PagedListPager((IPagedList)Model.Select(x => x.ListaArtikalaTrebovanja), page => Url.Action("FilterZavrsenaTrebovanja", new { SortiranjePoImenu = ViewBag.SortiranjePoImenu, SortiranjeDatum = ViewBag.SortiranjeDatum, page }))
+    </div>
+</div>
+
+@section scripts{
+    @*koristi se ista skripta kao i za aktivna trebovanja*@
+    <script src="~/Scripts/Skripte/ZavrsenaTrebovanjaZaSkladiste.js"></script>
+}

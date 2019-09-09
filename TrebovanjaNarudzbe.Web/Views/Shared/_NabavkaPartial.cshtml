@@ -1,0 +1,268 @@
+﻿@model TrebovanjaNarudzbe.Web.ViewModels.NabavkaViewModel
+<div class="col-md-12">
+    <div class="jumbotron shadow-lg rounded mb-5 p-4 bg-white">
+        <div class="row">
+            <div class="col-md-3">
+                <h5>Serijski broj: @Model.SerijskiBroj</h5>
+
+
+                <h5>Poručilac: @Model.ImeIPrezimeRadnika</h5>
+
+
+
+                <h5>Datum podnošenja zahtjeva:<br> @Model.DatumPodnosenjaZahtjeva.ToShortDateString()</h5>
+                <h5>Tip nabavke:<br> @Model.TipNabavke</h5>
+                <h5>
+                    Status nabavke: <span class="status"> @Model.NazivStatusa </span>
+                    @if (Model.NazivStatusa == "Odobreno")
+                    {
+                        <span class="dot" style=" background-color:green"></span>
+                    }
+                    else if (Model.NazivStatusa == "Odbijeno")
+                    {
+                        <span class="dot" style="background-color:red;"></span>
+                    }
+                    else if (Model.NazivStatusa == "Preuzeto")
+                    {
+                        <span class="dot" style=" background-color:#00537a"></span>
+                    }
+                    else
+                    {
+                        <span class="dot" style=" background-color:#daa226"></span>
+                    }
+                </h5>
+
+                    <label style="font-weight:bold">Ukupna cijena nabavke:</label>
+
+                    @{ decimal ukupnaCijena = 0;
+                        try
+                        {
+                            foreach (var stavka in Model.Stavke)
+                            {
+                                ukupnaCijena += (decimal)stavka.Cijena;
+                            }
+                        }
+                        catch (Exception)
+                        {
+
+                        }
+
+
+                    }
+                    <input class="form-control font-weight-bold " style="color:#00357a" type="text" disabled="" value="@ukupnaCijena KM">
+               
+            </div>
+      
+       
+
+        <div class="col-9">
+            <div class="widget has-shadow">
+                <div class="widget-body-no-padding">
+                    <div class="table-responsive">
+                        <table class="table mb-0 table-bordered">
+                            <thead class="bg-primary text-white">
+                                <tr style="background: #538AC5;">
+                                    <th>Opis</th>
+                                    <th>Tražena količina</th>
+                                    <th>Cijena</th>
+                                    <th>Dobavljač</th>
+                                    <th>Spremno</th>
+                                    <th>Preuzeto</th>
+                                </tr>
+                            </thead>
+                            @for (int i = 0; i < Model.Stavke.Count(); i++)
+                            {
+                                <tbody>
+                                    @if (i % 2 == 0)
+                                    {
+                                        <tr class="bg-white">
+                                            <td>@Model.Stavke[i].Opis</td>
+                                            <td>@Model.Stavke[i].Kolicina</td>
+                                            <td>@Model.Stavke[i].Cijena</td>
+                                            <td>@Model.Stavke[i].Dobavljac</td>
+                                            @if (Model.Stavke[i].Spremno)
+                                            {
+                                                <td>
+                                                    <input class="SpremnoCheckBox" type="checkbox" name="checkBoxSpremno" checked disabled>
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td>
+                                                    <input class="SpremnoCheckBox" type="checkbox" name="checkBoxSpremno" disabled>
+                                                </td>
+                                            }
+                                            @if (Model.Stavke[i].Preuzeto)
+                                            {
+                                                <td>
+                                                    <input class="PreuzetoCheckBox" type="checkbox" name="checkBoxPreuzeto" checked disabled>
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td>
+                                                    <input class="PreuzetoCheckBox" type="checkbox" name="checkBoxPreuzeto" disabled>
+                                                </td>
+                                            }
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr class="bg-light">
+                                            <td>@Model.Stavke[i].Opis</td>
+                                            <td>@Model.Stavke[i].Kolicina</td>
+                                            <td>@Model.Stavke[i].Cijena</td>
+                                            <td>@Model.Stavke[i].Dobavljac</td>
+                                            @if (Model.Stavke[i].Spremno)
+                                            {
+                                                <td>
+                                                    <input class="SpremnoCheckBox" type="checkbox" name="checkBoxSpremno" checked disabled>
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td>
+                                                    <input class="SpremnoCheckBox" type="checkbox" name="checkBoxSpremno" disabled>
+                                                </td>
+                                            }
+                                            @if (Model.Stavke[i].Preuzeto)
+                                            {
+                                                <td>
+                                                    <input class="PreuzetoCheckBox" type="checkbox" name="checkBoxPreuzeto" checked disabled>
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td>
+                                                    <input class="PreuzetoCheckBox" type="checkbox" name="checkBoxPreuzeto" disabled>
+                                                </td>
+                                            }
+                                        </tr>
+                                    }
+                                </tbody>
+                            }
+                        </table>
+                    
+                    </div>
+                </div>
+            </div>
+
+            @if (Model.Obrazlozenja == "" && Model.NapomenaReferentaNabavke == "" && Model.NapomenaSefa == "")
+            {
+            }
+            else
+            {
+            <hr class="my-4">
+            }
+            
+
+        <div class="row">
+            <div class="col-md-4">
+                @if (Model.Obrazlozenja == "")
+                {
+                }
+                else
+                {
+                <button class="btn btn-outline-info mr-1 mb-2 toast-top-full-width" type="button" data-toggle="collapse" data-target="#NapomenaRadnika_@Model.NabavkaId"
+                        aria-expanded="false" aria-controls="NapomenaRadnika_@Model.Obrazlozenja">
+                    <i class="la la-question-circle"></i>Obrazloženja
+                </button>
+                }
+                
+            </div>
+
+            <div class="col-md-4">
+                @if (Model.NapomenaReferentaNabavke == "")
+                {
+                }
+                else
+                {
+                    <button class="btn btn-outline-info mr-1 mb-2 toast-top-full-width" type="button" data-toggle="collapse" data-target="#NapomenaReferentaNabavke_@Model.NabavkaId"
+                            aria-expanded="false" aria-controls="NapomenaReferentaNabavke_@Model.NapomenaReferentaNabavke">
+                        <i class="la la-question-circle"></i>Napomena referenta nabavke
+                    </button>
+                }
+
+                </div>
+
+                <div class="col-md-4 text-right">
+                    @if (Model.NapomenaSefa == "" || Model.NapomenaSefa == null)
+                    {
+                    }
+                    else
+                    {
+                        <button class="btn btn-outline-info mr-1 mb-2 toast-top-full-width" type="button" data-toggle="collapse" data-target="#NapomenaNadredjenog_@Model.NabavkaId"
+                                aria-expanded="false" aria-controls="NapomenaNadredjenog_@Model.NapomenaSefa">
+                            <i class="la la-question-circle"></i>Napomena nadređenog
+                        </button>
+                    }
+
+                </div>
+
+
+                <div class="col-md-4">
+                    <div class="collapse multi-collapse" id="NapomenaRadnika_@Model.NabavkaId">
+                        <div class="card card-body border border-dark font-weight-bolder p-2 m-1">
+                            <p style="white-space: pre-line; color:#000000">@Model.Obrazlozenja</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="collapse multi-collapse" id="NapomenaReferentaNabavke_@Model.NabavkaId">
+                        <div class="card card-body border border-dark font-weight-bolder p-2 m-1">
+                            <p style="white-space: pre-line; color:#000000">@Model.NapomenaReferentaNabavke</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="collapse multi-collapse" id="NapomenaNadredjenog_@Model.NabavkaId">
+                        <div class="card card-body border border-dark font-weight-bolder p-2 m-1">
+                            <p style="white-space: pre-line; color:#000000"> @Model.NapomenaSefa</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <hr class="my-4">
+            <div class="row text-center">
+                @foreach (var dokument in Model.Dokumenti)
+                {
+                    string ekstenzija = dokument.FileName.Split('.').LastOrDefault().ToLower();
+                    <div class="class='col-md-2 m-2">
+                        <a href="@Url.Action("PreuzimanjeDokumenta","Nabavke", new { dokumentId = @dokument.DokumentId })">
+                            @if (ekstenzija == "pdf")
+                            {
+                                <img class="img-ikone" style="width:35px; height:auto;" src="/Content/img/pdf-1.png" />
+                            }
+                            else if (ekstenzija == "png" || ekstenzija == "jpg" || ekstenzija == "jpeg" || ekstenzija == "gif")
+                            {
+                                <img class="img-ikone" style="width:35px; height:auto;" src="/Content/img/polaroid-1.png" />
+                            }
+                            else if (ekstenzija == "docx")
+                            {
+                                <img class="img-ikone" style="width:35px; height:auto;" src="/Content/img/word-1.png" />
+                            }
+                            else if (ekstenzija == "xlsx")
+                            {
+                                <img class="img-ikone" style="width:35px; height:auto;" src="/Content/img/excel.png" />
+                            }
+                            else if (ekstenzija == "zip")
+                            {
+                                <img class="img-ikone" style="width:35px; height:auto;" src="~/Content/img/zip.png" />
+                            }
+                            else
+                            {
+                                <img class="img-ikone" style="width:35px; height:auto;" src="/Content/img/default.png" />
+                            }
+                            <span class="text-muted text-truncate ikone" style="width:100px;">@dokument.FileName</span>
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+        </div>
+    </div>
+</div>

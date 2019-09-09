@@ -1,0 +1,186 @@
+﻿@model IPagedList<TrebovanjaNarudzbe.Web.ViewModels.TrebovanjeViewModel>
+
+@{
+    ViewBag.Title = "Aktivna Trebovanja";
+    ViewBag.Naslov = "Skladište > Aktivna Trebovanja";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<style>
+
+    .searchContainer {
+        display: inline-flex;
+        flex: 1 1 300px;
+        position: relative;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .searchIcon {
+        padding: 0.5rem;
+    }
+
+    .searchBox {
+        border: 0;
+        padding: 0.5rem 0.5rem 0.5rem 0;
+        flex: 1;
+    }
+
+    .searchButton {
+        background: #538AC5;
+        border: 0;
+        color: white;
+        padding: 0.5rem;
+        border-radius: 0;
+    }
+
+    .margina {
+        margin-bottom: 50px;
+    }
+
+    .textNaslov {
+        font-size: 1.1rem
+    }
+
+    .textDatum {
+        font-size: 1.1rem
+    }
+
+    .paddingJumbotron {
+        padding: 2rem 2rem;
+    }
+
+    .pozadinaTabele {
+        background-color: #538AC5;
+        color: white;
+        font-size: 15px;
+    }
+
+    .pozadina {
+        background-color: #ffde7b6e;
+    }
+</style>
+@using X.PagedList.Mvc; @*//import this so we get our HTML Helper*@
+@using X.PagedList; @*//import this so we can cast our list to IPagedList (only necessary because ViewBag is dynamic)*@
+
+
+
+@using (Html.BeginForm())
+{
+
+    <div class="container">
+        <div class="row">
+
+            @*pretraga po artiklima*@
+            <div class="col-md-5 text-left ">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-default" style="background-color:#538AC5; color: white;"><i class="fa fa-search searchIcon" style="padding:0;"></i>&nbsp;Pretraga</span>
+                    </div>
+                    <input value="@ViewBag.SortiranjePoImenu" id="pretragaPoKorisnikuIArtiklu" type="text" name="SortiranjePoImenu" class="form-control" placeholder="po imenu ili artiklu"
+                           aria-label="Default" aria-describedby="inputGroup-sizing-default">
+
+                    <div class="input-group-prepend" id="BtnObrisiPretragu">
+                        <span style="cursor:pointer; color:red;" class="input-group-text"><i class="fas fa-times" style="padding:0;"></i></span>
+                    </div>
+                </div>
+            </div>
+
+            @*sortiranje po datumu*@
+            <div class="col-md-5 text-right">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputSortiranjeDatum" style="background-color:#538AC5; color: white;"> <i class="fa fa-search searchIcon" style="padding:0;"></i>&nbsp; Sortiranje po datumu</label>
+                    </div>
+                    <select value="@ViewBag.SortiranjeDatum" name="SortiranjeDatum" class="custom-select" id="inputSortiranjeDatum">
+                        <option selected>Izaberi...</option>
+                        <option value="2">Od najnovijeg ka najstarijem</option>
+                        <option value="1">Od najstarijeg ka najnovijem</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2 text-right mt-1">
+                <button id="btnFilter" type="button" class="btn btn-outline-primary"><i class="fas fa-sort-alpha-down"></i>Filtriraj...</button>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-12 margina">
+                @foreach (var item in Model)
+                {
+
+                    <div id="@item.TrebovanjeId" class="col-md-12 jumbotron bg-white paddingJumbotron shadow-lg rounded mb-5 mt-5">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h2 class="textNaslov"><span style="font-weight:normal;">Trebovanje:</span> @item.SerijskiBroj </h2>
+                                <h2 class="display-4 textNaslov">Poručilac: <span class="font-weight-bold">@item.ImeIPrezimeRadnika</span></h2>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <h2 class="textDatum">Datum podnošenja zahtjeva:<br /> @item.DatumPodnesenogZahtjeva.ToString("dd. MMM yyyy")</h2>
+                            </div>
+
+                        </div>
+                        <hr class="my-4">
+                        <ul class="list-group font-weight-bolder">
+                            <li class="list-group-item pozadinaTabele">Artikli:</li>
+                            @foreach (var artikl in item.ListaArtikalaTrebovanja)
+                            {
+                                //if provjera ako je item preuzet da se doda zelena bg na li
+                                <li class="list-group-item @if (artikl.Preuzeto) { <text>list-group-item-success</text> } else if(artikl.Spremno){<text>pozadina</text> } " rel="@artikl.ArtiklId">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            Naziv: <span class="font-weight-bolder">@artikl.Naziv</span> <br /> Količina:  &nbsp;<span class="font-weight-bolder">@artikl.TrebovanaKolicina</span>
+                                        </div>
+                                        @*provjera ako je artikl cekiran cekiraj checkbox*@
+                                        <div class="col-md-5 text-right mr-1">
+                                            @if (artikl.Spremno)
+                                            {
+
+                                                <input class="SpremnoCheckBox mr-1" type="checkbox" name="checkBoxSpremno" checked><span class="mr-4">Spremno</span>
+                                            }
+                                            else
+                                            { <input class="SpremnoCheckBox mr-1" type="checkbox" name="checkBoxSpremno"><span class="mr-4">Spremno</span>}
+                                            @if (artikl.Preuzeto)
+                                            {
+                                                <input class="PreuzetoCheckBox  mr-1" type="checkbox" name="checkBoxPreuzeto" checked><span>Preuzeto</span>
+                                            }
+                                            else
+                                            { <input class="PreuzetoCheckBox  mr-1" type="checkbox" name="checkBoxPreuzeto"><span>Preuzeto</span>}
+                                        </div>
+                                    </div>
+                                </li>
+
+                            }
+
+                        </ul>
+                        <div class="text-right">
+                            <hr class="my-4">
+                            <button type="button" value="@item.TrebovanjeId" class="btnSacuvajIzmjene btn btn-outline-primary btn-lg"><i class="fas fa-save" style="font-size:15pt;"></i>Sačuvaj</button>
+                        </div>
+                    </div>
+                }
+            </div>
+
+        </div>
+
+        @using (Ajax.BeginForm(new AjaxOptions { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "aktivnaTrebovanjaContainer" }))
+        {
+
+            <div class="row h-100 justify-content-center align-items-center p-5">
+                @Html.PagedListPager((IPagedList)Model.Select(x => x.ListaArtikalaTrebovanja), page => Url.Action("FilterPoDatumuIImenu", new { SortiranjePoImenu = ViewBag.SortiranjePoImenu, SortiranjeDatum = ViewBag.SortiranjeDatum, page }))
+                @*@Html.PagedListPager((IPagedList)Model.Select(x => x.ListaArtikalaTrebovanja),
+                    page => Url.Action("FilterPoDatumuIImenu", "Skladiste", new { SortiranjePoImenu = ViewBag.SortiranjePoImenu, SortiranjeDatum = ViewBag.SortiranjeDatum, page }),
+                    PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "movie_grid" }))*@
+            </div>
+
+        }
+
+    </div>
+
+
+}
+@section scripts{
+    <script src="~/Scripts/Skripte/AktivnaTrPartial.js"></script>
+}

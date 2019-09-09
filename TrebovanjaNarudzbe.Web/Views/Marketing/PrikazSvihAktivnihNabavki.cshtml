@@ -1,0 +1,46 @@
+﻿@model IPagedList<TrebovanjaNarudzbe.Web.ViewModels.NabavkaViewModel>
+
+@{
+    ViewBag.Title = "PrikazSvihAktivnihNabavki";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Naslov = "Nabavka > Aktivne nabavke";
+}
+@using X.PagedList.Mvc; @*//import this so we get our HTML Helper*@
+@using X.PagedList; @*//import this so we can cast our list to IPagedList (only necessary because ViewBag is dynamic)*@
+<div class="row">
+    <div class="col-md-12 mb-4">
+
+        <a class="btn btn-outline-primary btn-lg" data-toggle="collapse" href="#filter" role="button" aria-expanded="false" aria-controls="filter"><i class="fas fa-filter"></i>Prikaži filter</a>
+
+
+    </div>
+
+</div>
+@Html.Partial("_Filter")
+<div class="col-md-12 row">
+    @foreach (var item in Model)
+    {
+        @Html.Partial("_NabavkaZaMarketing", item)
+    }
+</div>
+
+@*//postavljanje paginacije na centar ekrana*@
+<div class="row h-100 justify-content-center align-items-center p-5">
+    @Html.PagedListPager((IPagedList)Model.Select(x => x.Stavke), page => Url.Action("FilterAktivneNabavke", new { SortiranjePoImenu = ViewBag.SortiranjePoImenu, SortiranjeDatum = ViewBag.SortiranjeDatum, page }))
+
+</div>
+
+@* modal za akciju, loader *@
+<div class="modal modal-backdrop fade" id="loader" tabindex="-1" role="dialog" aria-labelledby="loaderModal" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="top:22%">
+        <div class="cssload-loader">
+            <div class="cssload-inner cssload-one"></div>
+            <div class="cssload-inner cssload-two"></div>
+            <div class="cssload-inner cssload-three"></div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/Skripte/NarucivanjeNabavkeMarketing.js"></script>
+}

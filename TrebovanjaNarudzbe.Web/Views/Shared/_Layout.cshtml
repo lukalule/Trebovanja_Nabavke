@@ -1,0 +1,223 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    @if (ViewBag.Title == null)
+    {
+        <title>Trebovanje i nabavke</title>
+    }
+    else
+    {
+        <title>@ViewBag.Title</title>
+    }
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trebovanja i nabavke</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <link href="~/fonts/lineawesome/css/line-awesome.min.css" rel="stylesheet">
+    <link rel="icon" href="http://tehnoloskicentar.ba/images/lanaco.png">
+    <script>
+        WebFont.load({
+            google: { "families": ["Montserrat:200,300,400,500,600,700", "Noto+Sans:400,700"] },
+            active: function () {
+                sessionStorage.fonts = true;
+            }
+        });
+    </script>
+    <style>
+
+        @@font-face {
+            font-family: 'ionicons';
+            src: url('../../fonts/ionicons.ttf') format('truetype');
+        }
+
+        @@font-face {
+            font-family: 'fontawesome-webfont';
+            src: url('../../fonts/font-awesome-4.7.0/fonts/fontawesome-webfont.ttf') format('truetype');
+        }
+    </style>
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/Toastr")
+    @Styles.Render("~/Content/Select2")
+    @Styles.Render("~/Content/MyStyle")
+    @Styles.Render("~/Content/DataTable")
+
+
+
+</head>
+<body class="p-0 m-0 lo" style="padding-top:0px">
+
+    <div style="height:100%;
+    width:100%;
+    position: fixed;
+    overflow-x: hidden;
+    top: 0;
+    left: 0">
+
+        <nav class="navbar navbar-default" style="position:fixed;">
+            <div class="navbar-holder d-flex align-items-center align-middle justify-content-between">
+                <div class="navbar-header">
+                    <a class="navbar-brand">
+                        <div class="brand-image brand-big">
+                            <img src="~/Content/img/lanaco_logo.png" alt="logo" style="width:210px; height:auto;" class="logo-big">
+                        </div>
+
+                    </a>
+                  
+                </div>
+            </div>
+        </nav>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="page-content d-flex align-items-stretch">
+                <div class="default-sidebar sidebar">
+                    <!-- Begin Side Navbar -->
+                    <nav class="side-navbar box-scroll sidebar-scroll">
+                        <ul class="list-unstyled mt-5">
+                            <li>
+
+                                <a href="@Url.Action("IstorijaTrebovanjaKorisnika", "Trebovanje")"><i class="la icon-eo-finansijsko"></i><span> <i class="fa fa-home"></i>Početna</span></a>
+
+                            </li>
+                            <li>
+                                <span class="heading">Trebovanje i nabavke</span>
+                            </li>
+                            <li>
+                                <a href="#dropdown-rm" aria-expanded="false" data-toggle="collapse">
+                                    <i class="fa fa-cart-arrow-down"></i><span>Trebovanje</span>
+                                </a>
+                                <ul id="dropdown-rm" class="collapse list-unstyled pt-0">
+
+                                    <li>@Html.ActionLink("Novo trebovanje", "KreiranjeNovogTrebovanja", "Trebovanje")</li>
+
+                                    <li>@Html.ActionLink("Pregled mojih trebovanja", "IstorijaTrebovanjaKorisnika", "Trebovanje")</li>
+
+                                    @if (User.IsInRole("Tim lider") || User.IsInRole("Menadzer") || User.IsInRole("Generalni menadzer") || User.IsInRole("Radnik za odobravanje"))
+                                    {
+                                        <li>@Html.ActionLink("Pregled svih trebovanja", "IstorijaTrebovanjaKorisnikaIzSektora", "Trebovanje")</li>
+                                        <li>@Html.ActionLink("Odobravanje liste trebovanja", "OdobravanjeListeTrebovanja", "Email")</li>
+                                    }
+
+
+                                    @if (User.IsInRole("Referent skladista"))
+                                    {
+                                        <li>@Html.ActionLink("Aktivna trebovanja", "PrikazSvihAktivnihTrebovanja", "Marketing")</li>
+                                        <li>@Html.ActionLink("Pregled svih trebovanja", "PrikazSvihTrebovanja", "Marketing")</li>
+                                    }
+
+
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#dropdown-ljr" aria-expanded="false" data-toggle="collapse">
+                                    <i class="fa fa-cart-plus"></i><span>Nabavka</span>
+                                </a>
+                                <ul id="dropdown-ljr" class="collapse list-unstyled pt-0">
+                                    <a href="#dropdown" aria-expanded="false" data-toggle="collapse"><span>Nova nabavka</span></a>
+                                    <ul id="dropdown" class="collapse list-unstyled pt-0">
+                                        <li>@Html.ActionLink("Osnovna sredstva", "NovaNabavkaZaOsnovnaSredstva", "Nabavke")</li>
+                                        <li>@Html.ActionLink("Dalja proizvodnja/prodaja", "NovaNabavkaZaDaljuProdaju", "Nabavke")</li>
+
+                                    </ul>
+                                    <li>@Html.ActionLink("Pregled mojih nabavki", "IstorijaNabavkiKorisnika", "Nabavke")</li>
+                                  
+                                    @if (User.IsInRole("Tim lider") || User.IsInRole("Menadzer") || User.IsInRole("Generalni menadzer") || User.IsInRole("Radnik za odobravanje"))
+                                    {
+                                        <li>@Html.ActionLink("Pregled svih nabavki", "IstorijaNabavkiKorisnikaIzSektora", "Nabavke")</li>
+                                        <li>@Html.ActionLink("Odobravanje liste nabavki", "OdobravanjeListeNabavki", "OdobravanjeNabavke")</li>
+                                    }
+                                    @if (User.IsInRole("Referent nabavke"))
+                                    {
+                                        <li>@Html.ActionLink("Aktivne nabavke", "PrikazSvihAktivnihNabavki", "Marketing")</li>
+                                    }
+
+
+
+                                </ul>
+                            </li>
+                            @if (User.IsInRole("Skladistar"))
+                            {
+                                <li>
+                                    <a href="#dropdown-sk" aria-expanded="false" data-toggle="collapse">
+                                        <i class="fa fa-warehouse"></i><span>Skladište</span>
+                                    </a>
+                                    <ul id="dropdown-sk" class="collapse list-unstyled pt-0">
+                                        <li>@Html.ActionLink("Aktivna trebovanja", "AktivnaTrebovanja", "Skladiste")</li>
+
+                                        <li>@Html.ActionLink("Zavrsena trebovanja", "ZavrsenaTrebovanja", "Skladiste")</li>
+
+                                        <li>@Html.ActionLink("Aktivne nabavke", "AktivneNabavke", "Skladiste")</li>
+
+                                        <li>@Html.ActionLink("Zavrsene nabavke", "ZavrseneNabavke", "Skladiste")</li>
+                                    </ul>
+                                </li>
+                            }
+
+
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+        }
+        <a href="#" class="go-top"><i class="fa fa-arrow-circle-up"></i></a>
+
+        <div class="content-inner">
+            <div class="container-fluid" id="bodyTag">
+                <div class="col-md-12 mb-5" style="background-color:white;padding:10px;font-size:16px; cursor:default;">
+                    @{ if (ViewBag.Naslov == "Skladište > Aktivna Trebovanja" || ViewBag.Naslov == "Skladište > Završena trebovanja" ||
+                                               ViewBag.Naslov == "Skladište > Aktivno Trebovanje" || ViewBag.Naslov == "Skladište > Tabelarni prikaz završenih trebovanja" ||
+                                               ViewBag.Naslov == "Skladište > Završene nabavke" ||
+                                              ViewBag.Naslov == " Skladište > Tabelarni prikaz aktivnih trebovanja")
+                        {
+                            <i class="fas fa-warehouse pr-1"></i>
+                        }
+                        else if (ViewBag.Naslov == "Greška")
+                        {
+                            <i style="color:red" class="fas fa-exclamation-circle"></i>
+                        }
+
+                        else if (ViewBag.Naslov == "Nabavka > Nova nabavka za dalju prodaju" || ViewBag.Naslov == "Nabavka > Nova nabavka osnovnih sredstava" ||
+                            ViewBag.Naslov == "Nabavke > Istorija nabavki iz Vašeg sektora" || ViewBag.Naslov == "Nabavka > Aktivne nabavke" ||
+                            ViewBag.Naslov == "Nabavke > Lista nabavki za odobravanje" || ViewBag.Naslov == "Nabavke > Istorija Vaših nabavki" ||
+                            ViewBag.Naslov == "Nabavke > Kreiranje nove nabavke za osnovna sredstva")
+                        {
+                            <i class="fas fa-cart-plus pr-1"></i>
+                        }
+                        else
+                        {
+                            <i class="fas fa-cart-arrow-down pr-1"></i>
+                        }
+                    }
+                    @ViewBag.Naslov
+                </div>
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/EcoOne")
+    @Scripts.Render("~/bundles/Toastr")
+    @Scripts.Render("~/bundles/Select2")
+    @Scripts.Render("~/bundles/DataTables")
+
+    @RenderSection("scripts", required: false)
+
+    <script>
+        $(function () {
+            $(".modal-backdrop .modal-content").draggable({
+                handle: ".modal-header"
+            });
+
+        });
+
+    </script>
+
+</body>
+</html>

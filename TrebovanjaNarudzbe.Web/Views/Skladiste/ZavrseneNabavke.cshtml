@@ -1,0 +1,45 @@
+﻿@model IPagedList<TrebovanjaNarudzbe.Web.ViewModels.NabavkaViewModel>
+
+@{
+    ViewBag.Title = "ZavrseneNabavke";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Naslov = "Skladište > Završene nabavke";
+
+}
+
+@using X.PagedList.Mvc;
+@using X.PagedList;
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 ">
+            <div class="btn-toolbar float-right" role="toolbar">
+                <div class="btn-group " role="group" aria-label="First group">
+                    <button type="button" class="btn  btn-outline-primary active" data-toggle="tooltip" data-placement="top" title="Prikaži listu"><i class="fa fa-list" aria-hidden="true"></i></button>
+                    <a href="@Url.Action("TabelarniPrikazZavrsenihNabavki", "Skladiste")" data-toggle="tooltip" data-placement="top" title="Tabelarni prikaz" class="btn  btn-outline-primary">
+                        <i class="fa fa-table" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 margina">
+            @foreach (var item in Model)
+            {
+
+                @Html.Partial("_ZavrseneNabavkePartial", item);
+            }
+        </div>
+    </div>
+
+    @*//postavljanje paginacije na centar ekrana*@
+    <div class="row h-100 justify-content-center align-items-center p-5">
+        @Html.PagedListPager((IPagedList)Model.Select(x => x.Stavke), page => Url.Action("ZavrseneNabavke", new { page }))
+    </div>
+
+</div>
+
+
+
+
+

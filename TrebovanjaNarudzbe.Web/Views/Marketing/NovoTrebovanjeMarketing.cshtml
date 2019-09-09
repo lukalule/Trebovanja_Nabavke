@@ -1,0 +1,17 @@
+﻿@model TrebovanjaNarudzbe.Web.ViewModels.TrebovanjeViewModel
+@{
+    ViewBag.Title = "NovoTrebovanjeMarketing";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Naslov = "Trebovanje > Pregled novog trebovanja";
+}
+@using TrebovanjaNarudzbe.Web.Enum
+<div class="col-md-12 row">
+    @if (Model.StatusTrebovanjaId == (int)Status.U_procesu_nabavke)
+    {
+        @Html.Partial("_TrebovanjeZaMarketingPartial", Model)
+    }
+    else
+    {
+        <h1 style="color:red">Link nije aktivan!</h1>
+    }
+</div>

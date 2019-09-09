@@ -1,0 +1,159 @@
+﻿@model TrebovanjaNarudzbe.Web.ViewModels.TrebovanjeViewModel
+@{
+    /**/
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Naslov = "Trebovanje > Kreiranje novog trebovanja";
+    ViewBag.Title = "Kreiranje novog trebovanja";
+}
+
+<style>
+    .obrisi:hover {
+        color: red;
+    }
+
+    .fa-times {
+        font-size: 18pt;
+    }
+
+
+
+
+</style>
+
+
+
+    <!-- Modal -->
+    <div class="modal-backdrop fade" id="BrisanjeArtiklaModal" tabindex="-1" role="dialog" aria-labelledby="BrisanjeArtiklaModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="BrisanjeArtiklaModalLabel">Brisanje artikla</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Da li zelite obrisati artikl iz korpe ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">@*<i class="fas fa-times"></i>&nbsp;*@Odustani</button>
+                    <button id="btnObrisi" type="button" class="btn btn-primary">@*<i class="far fa-trash-alt"></i>&nbsp;*@Obriši iz korpe</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<div class="row flex-row font-weight-bolder">
+    <div class="col-md-7">
+        <div class="jumbotron shadow-lg rounded mb-5 p-4 bg-white">
+
+            <div class="widget-body row">
+                <div class="form-group has-search col-md-6">
+                    <span>Izeberite artikle</span>
+                    <div class="col-md-12 p-0">
+                        <select class="js-example-basic-single toast-top-full-width" name="state" id="ArtiklOpcije">
+                            @foreach (var item in (List<SelectListItem>)ViewBag.listaAtikala)
+                            {
+                                <option value="@item.Value">
+                                    [  @Html.DisplayFor(modelItem => item.Value) ]
+                                    <span class="nazivArtikla"> @Html.DisplayFor(modelItem => item.Text)</span>
+                                </option>
+                            }
+                        </select>
+                        <span class="fa fa-search form-control-feedback"></span>
+                    </div>
+                    <span>Količina</span>
+                    <div class="input-group">
+                        <input class="form-control" type="number" value="1" id="Kolicina" min="1" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" />
+                    </div>
+                </div>
+
+                <div class=" col-md-6">
+                    <div class="form-group">
+                        <label for="napomenaRadnika">Napomena za trebovanje</label>
+                        <textarea placeholder="Upisite napomenu za trebovanje" class="form-control" id="napomenaRadnika" rows="4"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center col-md-12 mt-4">
+                <button id="btnDodajUKorpu" class="btn btn-outline-primary mr-1 mb-2"><i class="fas fa-cart-plus"></i>&nbsp;Dodaj u korpu</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-5">
+        <div class="jumbotron shadow-lg rounded mb-5 p-4 " style="background-color:white;">
+            <h4><i class="fas fa-shopping-cart"></i>&nbsp;&nbsp;Artikli u korpi</h4>
+            <div class="widget-body-no-padding mt-4">
+                <div class="table-responsive text-center">
+                    <table class="table table-hover table-bordered mb-0 shadow-lg rounded">
+                        <thead style="color: #FFF">
+                            <tr style="background: #538AC5;">
+                                <th class="w-25">
+                                    #
+                                </th>
+                                <th class="w-25">
+                                    Naziv artikla
+                                </th>
+                                <th class="w-25">
+                                    Količina
+                                </th>
+                                <th class="w-25">
+                                    Obriši
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="text-center col-md-12">
+            <button id="BtnKreirajTrebovanje" type="button" class="btn btn-primary  btn-lg mr-1 mb-2 hi-icon hi-icon-images"><i class="fas fa-check"></i>&nbsp;Potvrdi trebovanje</button>
+        </div>
+    </div>
+</div>
+
+    @*//Modal za potvrdi trebovanje*@
+    <div class="modal-backdrop fade" id="PotvrdiTrebovanje" tabindex="-1" role="dialog" aria-labelledby="PotvrdiTrebovanjeLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Kreiranje trebovanja
+                </div>
+                <div class="modal-body">
+                    Da li ste sigurni da zelite izvrsiti novo trebovanje ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Odustani</button>
+
+                    <input type="submit" class="btn btn-primary" id="btnPotvrdi" value="Potvrdi" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+@* modal za akciju, loader *@
+<div class="modal modal-backdrop fade" id="loader" tabindex="-1" role="dialog" aria-labelledby="loaderModal" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="top:22%">
+        <div class="cssload-loader">
+            <div class="cssload-inner cssload-one"></div>
+            <div class="cssload-inner cssload-two"></div>
+            <div class="cssload-inner cssload-three"></div>
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts{
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>*@
+    <!-- Include Select2 V 4 -->
+    <script src="~/Scripts/Skripte/SkriptaZaKreiranjeNovogTrebovanja.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
+}

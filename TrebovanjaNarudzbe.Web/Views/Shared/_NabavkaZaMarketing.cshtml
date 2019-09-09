@@ -1,0 +1,184 @@
+﻿@model TrebovanjaNarudzbe.Web.ViewModels.NabavkaViewModel
+<div class="col-md-6 divZaTrazenjeIDa">
+    <div class="jumbotron shadow-lg rounded mb-5 p-4 bg-white">
+        <div class="row">
+            <div class="col-6">
+                <p id="idNabavke" hidden rel="@Model.NabavkaId"></p>
+                <h5>Serijski broj: @Model.SerijskiBroj</h5>
+
+                <h5>Poručilac: @Model.ImeIPrezimeRadnika</h5>
+                <h5>
+                    Ukupna cijena:
+                    @{ decimal ukupnaCijena = 0;
+                        try
+                        {
+                            foreach (var stavka in Model.Stavke)
+                            {
+
+                                ukupnaCijena += (decimal)stavka.Cijena;
+                            }
+                        }
+                        catch {}
+
+                    }
+                    @ukupnaCijena KM
+                </h5>
+
+            </div>
+            <div class="col-6 text-right">
+                <h5>Datum podnošenja zahtjeva:<br> @Model.DatumPodnosenjaZahtjeva.ToShortDateString()</h5>
+            </div>
+        </div>
+        <hr class="my-4">
+
+
+        <div class="widget has-shadow">
+
+            <div class="widget-body-no-padding">
+                <div class="table-responsive">
+                    <table class="table mb-0 table-bordered">
+                        <thead class="bg-primary text-white">
+                            <tr style="background: #538AC5;">
+                                <th>Šifra</th>
+                                <th>Opis</th>
+                                <th>Količina</th>
+                                <th>Cijena</th>
+                            </tr>
+                        </thead>
+                        @for (int i = 0; i < Model.Stavke.Count(); i++)
+                        {
+                            <tbody>
+                                @if (i % 2 == 0)
+                                {
+                                    <tr class="bg-white">
+                                        <td>@Model.Stavke[i].NabavkaVeznaId</td>
+                                        <td>@Model.Stavke[i].Opis</td>
+                                        <td>@Model.Stavke[i].Kolicina</td>
+                                        <td>@Model.Stavke[i].Cijena</td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr class="bg-light">
+                                        <td>@Model.Stavke[i].NabavkaVeznaId</td>
+                                        <td>@Model.Stavke[i].Opis</td>
+                                        <td>@Model.Stavke[i].Kolicina</td>
+                                        <td>@Model.Stavke[i].Cijena</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <hr class="my-4">
+        <div class="row">
+            <div class="col-md-6">
+                @if (Model.Obrazlozenja == "")
+                {
+                }
+                else
+                {
+                <button class="btn btn-outline-info mr-1 mb-2" type="button" data-toggle="collapse" data-target="#NapomenaRadnika_@Model.NabavkaId"
+                        aria-expanded="false" aria-controls="NapomenaRadnika_@Model.Obrazlozenja">
+                    <i class="la la-question-circle"></i>  Obrazlozenja
+                </button>
+                }
+            </div>
+
+            <div class="col-md-6 text-right">
+                @if (Model.NapomenaSefa == "")
+                {
+                }
+                else
+                {
+                    <button class="btn btn-outline-info mr-1 mb-2" type="button" data-toggle="collapse" data-target="#NapomenaNadredjenog_@Model.NabavkaId"
+                            aria-expanded="false" aria-controls="NapomenaNadredjenog_@Model.NapomenaSefa">
+                        <i class="la la-question-circle"></i>  Napomena nadređenog
+                    </button>
+                }
+                </div>
+
+
+            <div class="col-md-6">
+
+                <div class="collapse multi-collapse" id="NapomenaRadnika_@Model.NabavkaId">
+                    <div class="card card-body border border-dark font-weight-bolder p-2 m-1">
+                        <p style="white-space: pre-line; color:#000000">@Model.Obrazlozenja</p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-6">
+                <div class="collapse multi-collapse" id="NapomenaNadredjenog_@Model.NabavkaId">
+                    <div class="card card-body border border-dark font-weight-bolder p-2 m-1">
+                        <p style="white-space: pre-line; color:#000000"> @Model.NapomenaSefa</p>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="col-md-12">
+                <hr class="my-4">
+                <div class="row text-center">
+                    @foreach (var dokument in Model.Dokumenti)
+                    {
+                        string ekstenzija = dokument.FileName.Split('.').LastOrDefault().ToLower();
+                        <div class="class='col-md-2 m-2">
+                            <a href="@Url.Action("PreuzimanjeDokumenta","Nabavke", new { dokumentId = @dokument.DokumentId })">
+                                @if (ekstenzija == "pdf")
+                                {
+                                    <img class="img-ikone" style="width:35px; height:auto;" src="/Content/img/pdf-1.png" />
+                                }
+                                else if (ekstenzija == "png" || ekstenzija == "jpg" || ekstenzija == "jpeg" || ekstenzija == "gif")
+                                {
+                                    <img class="img-ikone" style="width:35px; height:auto;" src="/Content/img/polaroid-1.png" />
+                                }
+                                else if (ekstenzija == "docx")
+                                {
+                                    <img class="img-ikone" style="width:35px; height:auto;" src="/Content/img/word-1.png" />
+                                }
+                                else if (ekstenzija == "xlsx")
+                                {
+                                    <img class="img-ikone" style="width:35px; height:auto;" src="/Content/img/excel.png" />
+                                }
+                                else if (ekstenzija == "zip")
+                                {
+                                    <img class="img-ikone" style="width:35px; height:auto;" src="~/Content/img/zip.png" />
+                                }
+                                else
+                                {
+                                    <img class="img-ikone" style="width:35px; height:auto;" src="/Content/img/default.png" />
+                                }
+                                <span class="text-muted text-truncate ikone" style="width:100px;">@dokument.FileName</span>
+                            </a>
+                        </div>
+                    }
+                </div>
+
+                <div class="row mt-3 pb-4">
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Napomena referenta nabavke</span>
+                            </div>
+                            <textarea  class="form-control napomenaReferanta" aria-label="Napomena referenta " placeholder="Unesite napomenu...">@Model.NapomenaReferentaNabavke</textarea>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            
+
+            <div class="text-right" style="margin:auto">
+                @* zamjeniti sa skriptom i pokupiti id i napomenu referenta link izbrisati *@
+                @*@Html.ActionLink("Naručeno", "NabavkaNarucivanje", "Marketing", new { nabavka = Model.NabavkaId }, new { @class = "btn btn-outline-primary mr-1 mb-2" })*@
+                <input type="button" class="btn btn-outline-primary mr-1 mb-2 btnNaruceno" value="Naručeno" />
+            </div>
+        </div>
+    </div>
+</div>

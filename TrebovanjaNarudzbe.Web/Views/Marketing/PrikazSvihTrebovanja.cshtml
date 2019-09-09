@@ -1,0 +1,112 @@
+﻿@model IPagedList<TrebovanjaNarudzbe.Web.ViewModels.TrebovanjeViewModel>
+@{
+    ViewBag.Title = "PrikazSvihTrebovanja";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Naslov = "Trebovanje > Pregled svih trebovanja";
+}
+
+<style>
+
+    .searchContainer {
+        display: inline-flex;
+        flex: 1 1 300px;
+        position: relative;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .searchIcon {
+        padding: 0.5rem;
+    }
+
+    .searchBox {
+        border: 0;
+        padding: 0.5rem 0.5rem 0.5rem 0;
+        flex: 1;
+    }
+
+    .searchButton {
+        background: #538AC5;
+        border: 0;
+        color: white;
+        padding: 0.5rem;
+        border-radius: 0;
+    }
+
+    .margina {
+        margin-bottom: 50px;
+    }
+
+    .textNaslov {
+        font-size: 1.1rem
+    }
+
+    .textDatum {
+        font-size: 1.1rem
+    }
+
+    .paddingJumbotron {
+        padding: 2rem 2rem;
+    }
+
+    .pozadinaTabele {
+        background-color: #538AC5;
+        color: white;
+        font-size: 15px;
+    }
+
+    .pozadina {
+        background-color: #ffde7b6e;
+    }
+</style>
+@using X.PagedList.Mvc; @*//import this so we get our HTML Helper*@
+@using X.PagedList; @*//import this so we can cast our list to IPagedList (only necessary because ViewBag is dynamic)*@
+
+<div class="row margina">
+    <div class="col-md-6">
+
+        <a class="btn btn-outline-primary btn-lg" data-toggle="collapse" href="#filter" role="button" aria-expanded="false" aria-controls="filter"><i class="fas fa-filter"></i>Prikaži filter</a>
+
+
+    </div>
+    <div class="col-md-6 ">
+        <div class="btn-toolbar float-right" role="toolbar">
+            <div class="btn-group " role="group" aria-label="First group">
+                <button type="button" class="btn  btn-outline-primary active" data-toggle="tooltip" data-placement="top" title="Prikaži listu"><i class="fa fa-list" aria-hidden="true"></i></button>
+                <a href="@Url.Action("TabelarniPrikazSvihTrebovanja", "Marketing")" data-toggle="tooltip" data-placement="top" title="Tabelarni prikaz" class="btn  btn-outline-primary">
+                    <i class="fa fa-table" aria-hidden="true"></i>
+                </a>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+    @Html.Partial("_Filter")
+
+    <div class="row">
+
+        @foreach (var trebovanje in Model)
+        {
+            @Html.Partial("_TrebovanjePartial", trebovanje);
+
+        }
+
+    </div>
+
+    <div class="row h-100 justify-content-center align-items-center p-5">
+        @Html.PagedListPager((IPagedList)Model.Select(x => x.ListaArtikalaTrebovanja), page => Url.Action("FilterTrebovanje", "Marketing", new { SortiranjePoImenu = ViewBag.SortiranjePoImenu, SortiranjeDatum = ViewBag.SortiranjeDatum, page, StatusTrebovanja = ViewBag.StatusTrebovanja }))
+    </div>
+
+
+
+    
+@section scripts{
+    <script src="~/Scripts/Skripte/MarketingPrikazSvihTrebovanja.js"></script>
+}
+

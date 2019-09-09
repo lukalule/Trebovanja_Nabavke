@@ -1,0 +1,174 @@
+﻿@model TrebovanjaNarudzbe.Web.ViewModels.NabavkaViewModel
+
+
+<style>
+    .textNaslov {
+        font-size: 1.1rem
+    }
+
+    .textDatum {
+        font-size: 1.1rem
+    }
+
+    .pozadinaTabele {
+        background-color: #538AC5;
+        color: white;
+        font-size: 15px;
+    }
+
+    .pozadina {
+        background-color: #ffde7b6e;
+    }
+</style>
+
+
+@using (Html.BeginForm())
+{
+
+    <div id="modalContainer">
+        <input type="hidden" value="@Model.NabavkaId" id="trebovanjeId" />
+        <div class="row">
+            <div class="col-md-6">
+                <h2 class="textNaslov"><span style="font-weight:normal;">Nabavka:</span> @Model.SerijskiBroj </h2>
+                <h2 class="display-4 textNaslov">Poručilac: <span class="font-weight-bold">@Model.ImeIPrezimeRadnika</span></h2>
+            </div>
+            <div class="col-md-6 text-right">
+                <h2 class="textDatum">Datum podnošenja zahtjeva:<br /> @Model.DatumPodnosenjaZahtjeva.ToString("dd.MM.yyyy.")</h2>
+            </div>
+
+        </div>
+        <hr class="my-4">
+        <span class="list-group-item pozadinaTabele">Artikli:</span>
+        <ul class="list-group font-weight-bolder">
+            @foreach (var artikl in Model.Stavke)
+            {
+                //if provjera ako je item preuzet da se doda zelena bg na li
+                <li class="list-group-item @if (artikl.Preuzeto)
+                { <text>list-group-item-success</text> }
+                else if (artikl.Spremno)
+                {<text>pozadina</text> } " rel="@artikl.NabavkaVeznaId">
+                    <div class="row">
+                        <div class="col-md-6">
+                            Opis: <span class="font-weight-bolder">@artikl.Opis</span>
+                            <br /> Količina:  &nbsp;<span class="font-weight-bolder">@artikl.Kolicina</span>
+                            <br /> Dobavljač:  &nbsp;<span class="font-weight-bolder">@artikl.Dobavljac</span>
+                        </div>
+                        @*provjera ako je artikl cekiran cekiraj checkbox*@
+                        <div class="col-md-5 text-right mr-1">
+                            @if (artikl.Spremno)
+                            {
+
+                                <input class="SpremnoCheckBox mr-1" type="checkbox" name="checkBoxSpremno" checked><span class="mr-4">Spremno</span>
+                            }
+                            else
+                            { <input class="SpremnoCheckBox mr-1" type="checkbox" name="checkBoxSpremno"><span class="mr-4">Spremno</span>}
+                            @if (artikl.Preuzeto)
+                            {
+                                <input class="PreuzetoCheckBox  mr-1" type="checkbox" name="checkBoxPreuzeto" checked><span>Preuzeto</span>
+                            }
+                            else
+                            { <input class="PreuzetoCheckBox  mr-1" type="checkbox" name="checkBoxPreuzeto"><span>Preuzeto</span>}
+                        </div>
+                    </div>
+                </li>
+
+            }
+
+        </ul>
+
+        <div class="col-md-12">
+            <hr class="my-4">
+            <div class="row text-center">
+                @foreach (var dokument in Model.Dokumenti)
+                {
+                    string ekstenzija = dokument.FileName.Split('.').LastOrDefault().ToLower();
+                    <div class="class='col-md-2 m-2">
+                        <a href="@Url.Action("PreuzimanjeDokumenta", "Nabavke", new { dokumentId = @dokument.DokumentId })">
+                            @if (ekstenzija == "pdf")
+                            {
+                                <img class="img-ikone" style="width:35px; height:auto;" src="/Content/img/pdf-1.png" />
+                            }
+                            else if (ekstenzija == "png" || ekstenzija == "jpg" || ekstenzija == "jpeg" || ekstenzija == "gif")
+                            {
+                                <img class="img-ikone" style="width:35px; height:auto;" src="/Content/img/polaroid-1.png" />
+                            }
+                            else if (ekstenzija == "docx")
+                            {
+                                <img class="img-ikone" style="width:35px; height:auto;" src="/Content/img/word-1.png" />
+                            }
+                            else if (ekstenzija == "xlsx")
+                            {
+                                <img class="img-ikone" style="width:35px; height:auto;" src="/Content/img/excel.png" />
+                            }
+                            else
+                            {
+                                <img class="img-ikone" style="width:35px; height:auto;" src="/Content/img/default.png" />
+                            }
+                            <span class="text-muted text-truncate ikone" style="width:100px;">@dokument.FileName</span>
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="text-right">
+            <hr class="my-4">
+            <button type="button" class="btnSacuvajIzmjene btn btn-outline-primary btn-lg"><i class="fas fa-save" style="font-size:15pt;"></i>Sačuvaj</button>
+        </div>
+</div>
+}
+
+
+    <script>
+        $(".btnSacuvajIzmjene").click(function () {
+            $("#loader").removeClass('sakrij');
+            $("#loader").modal({
+                backdrop: "static",
+                keyboard: false,
+                show: true
+            });
+            var idTrebovanja = $('#trebovanjeId').val();
+            //objekat koji saljemo preko ajax-a u c#
+            let trebovanjeObject = {
+                TrebovanjeId: idTrebovanja,
+                ListaArtikalaTrebovanja: []
+
+            };
+
+            $('ul li').each(function (i) {
+                //provjera da li je cekirano true/false
+                var spremno = $(this).find('.SpremnoCheckBox').is(':checked');
+                var preuzeto = $(this).find('.PreuzetoCheckBox').is(':checked');
+
+                if ($(this).attr('rel') !== undefined) {
+                    var artikl = { ArtiklId: $(this).attr('rel'), Spremno: spremno, Preuzeto: preuzeto };
+                    trebovanjeObject.ListaArtikalaTrebovanja.push(artikl);
+                }
+            });
+
+            AjaxCekiranjeTrebovanja(trebovanjeObject);
+        });
+
+        function AjaxCekiranjeTrebovanja(data) {
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: '/Skladiste/IzmjenaAktivneNabavke',
+                data: JSON.stringify(data),
+                success: function (data) {
+                    if (data.success) {
+                        location.reload();
+                        $("#loader").modal('hide');
+                        toastr.success("Izmjene na artiklima uspješno sačuvane!", "Uspjeh!", { timeOut: 3000 });
+
+                    } else {
+                        toastr.warning("Došlo je do greške u komunikaciji sa serverom!", "Greška!", { timeOut: 3000 });
+                    }
+                },
+                error: function (data) {
+                }
+            });
+        }
+    </script>

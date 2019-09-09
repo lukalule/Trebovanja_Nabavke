@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewBag.Title = "TabelarniPrikazZavrsenihTrebovanja";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Naslov = "Skladište > Tabelarni prikaz završenih trebovanja";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="btn-toolbar float-right" role="toolbar">
+                <div class="btn-group " role="group" aria-label="First group">
+                    <a href="@Url.Action("ZavrsenaTrebovanja", "Skladiste")" data-toggle="tooltip" data-placement="top" title="Prikaži listu" class="btn  btn-outline-primary">
+                        <i class="fa fa-list" aria-hidden="true"></i>
+                    </a>
+
+                    <button type="button" class="btn  btn-outline-primary active" data-toggle="tooltip" data-placement="top" title="Tabelarni prikaz"><i class="fa fa-table" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <table id="TabelarniPrikaz" class="display table-bordered table bg-white" style="width:100%">
+                <thead>
+                    <tr class=" text-white" style="background-color:#538ac5">
+
+                        <th>Serijski broj</th>
+                        <th>Šifra radnika</th>
+                        <th>Ime i prezime radnika</th>
+                        <th>Datum podnesenog zahtjeva</th>
+                        <th>Datum zaduženja trebovanja</th>
+                        <th>Poručeni artikli</th>
+
+
+                    </tr>
+                </thead>
+
+
+            </table>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/DataTables/DataTableZavrsenaTrebovanjaSkladiste.js"></script>
+}

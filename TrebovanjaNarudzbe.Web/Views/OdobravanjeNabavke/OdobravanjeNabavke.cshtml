@@ -1,0 +1,32 @@
+﻿@model TrebovanjaNarudzbe.Web.ViewModels.NabavkaViewModel
+
+@{
+    ViewBag.Title = "OdobravanjeNabavke";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Naslov = "Nabavke > Odobravanje nabavke";
+}
+
+@if (ViewBag.Greska != null)
+{
+    <h1 style="color:red">@ViewBag.Greska</h1>
+}
+else
+{
+    @Html.Partial("_OdobravanjeNabavkePartial", Model)
+}
+
+@* modal za akciju, loader *@
+    <div class="modal modal-backdrop fade" id="loader" tabindex="-1" role="dialog" aria-labelledby="loaderModal" aria-hidden="true">
+        <div class="modal-dialog" role="document" style="top:22%">
+            <div class="cssload-loader">
+                <div class="cssload-inner cssload-one"></div>
+                <div class="cssload-inner cssload-two"></div>
+                <div class="cssload-inner cssload-three"></div>
+            </div>
+        </div>
+    </div>
+
+@section scripts
+    {
+    <script src="~/Scripts/Skripte/OdobravanjeNabavke.js"></script>
+}

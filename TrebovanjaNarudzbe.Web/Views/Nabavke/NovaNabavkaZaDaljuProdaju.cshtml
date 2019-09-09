@@ -1,0 +1,278 @@
+﻿@model TrebovanjaNarudzbe.Web.ViewModels.NabavkaViewModel
+@{
+    /**/
+
+    ViewBag.Title = "NovaNabavka";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Naslov = "Nabavka > Nova nabavka za dalju prodaju";
+}
+
+
+<input id="TipId" hidden value="2" />
+<!-- Modal za brisanje stavki iz nabavke -->
+<div class="modal-backdrop fade" id="BrisanjeArtiklaModal" tabindex="-1" role="dialog" aria-labelledby="BrisanjeArtiklaModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="BrisanjeArtiklaModalLabel">Brisanje artikla</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Da li zelite obrisati stavku iz nabavke ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Odustani</button>
+                <button id="btnObrisi" type="button" class="btn btn-primary">Obrisi iz korpe</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm("NovaNabavkaZaOsnovnaSredstva", "Nabavke", FormMethod.Post, new { enctype = "multipart/form-data", id = "formaZaNabavku" }))
+{
+
+    <div class="row flex-row ">
+        <div class="col-md-6">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="NabavkaNoviProizvod-tab" data-toggle="tab" href="#NabavkaNoviProizvod" role="tab" aria-controls="NabavkaNoviProizvod" aria-selected="true">Nabavka novog proizvoda</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="NabavkaPostojecegArtikla-tab" data-toggle="tab" href="#NabavkaPostojecegArtikla" role="tab" aria-controls="NabavkaPostojecegArtikla" aria-selected="false">Nabavka postojećeg artikla</a>
+                </li>
+
+            </ul>
+            <div class="jumbotron shadow-lg rounded mb-5 p-4 bg-white">
+
+                <div class="widget-body row">
+                    <div class="form-group col-md-12">
+
+                        <div class="tab-content" id="TabContent">
+
+                            <div class="tab-pane fade show active" id="NabavkaNoviProizvod" role="tabpanel" aria-labelledby="NabavkaNoviProizvod-tab">
+                                <div class=" col-md-12 row mt-0">
+
+                                    <div class="col-md-6">
+                                        <div class="form-group col-md-12">
+                                            <label for="#Kolicina">Količina</label>
+                                            <input class="form-control" type="number" value="1" id="Kolicina" min="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" />
+
+                                        </div>
+
+                                        <div class="form-group col-md-12">
+                                            <label for="#Cijena">Cijena</label>
+                                            <input class="form-control" type="number" value="1" id="Cijena" min="1" step="0.01">
+                                        </div>
+
+                                        <div class="form-group col-md-12">
+                                            <span>Dobavljač</span>
+                                            <div class="input-group">
+                                                <input class="form-control" type="text" id="Dobavljac" style="margin-bottom:10px">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label for="napomenaRadnika">Opis</label>
+                                        <textarea class="form-control textarea-scroll" id="Opis" rows="4"></textarea>
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <button type="button" id="btnDodajUTabelu" class="btn btn-outline-primary"><i class="la la-plus"></i>Dodaj</button>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="NabavkaPostojecegArtikla" role="tabpanel" aria-labelledby="NabavkaPostojecegArtikla-tab">
+
+                                <div class="col-md-12 row p-0">
+                                    <div class="form-group has-search col-md-6 m-0">
+                                        <span>Izeberite artikle</span>
+                                        <div class="col-md-12 p-0">
+                                            <select class="js-example-basic-single toast-top-full-width" name="state" style="width:280px;" id="ArtiklOpcije">
+                                                @foreach (var item in (List<SelectListItem>)ViewBag.listaAtikala)
+                                                {
+                                                    <option value="@item.Value">
+                                                        [ @Html.DisplayFor(modelItem => item.Value) ]
+                                                        <span class="nazivArtikla"> @Html.DisplayFor(modelItem => item.Text)</span>
+                                                    </option>
+                                                }
+                                            </select>
+                                            <span class="fa fa-search form-control-feedback"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="#Kolicina">Količina</label>
+                                            <input class="form-control" type="number" value="1" id="KolicinaArtikla" min="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="#CijenaArtikla">Cijena</label>
+                                            <input class="form-control" type="number" style="color:#00357a" id="CijenaArtikla" disabled />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <button type="button" id="btnDodajUKorpu" class="btn btn-outline-primary"><i class="la la-plus"></i>Dodaj</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="col-md-6" style="padding-top:41px">
+            <div class="jumbotron shadow-lg rounded mb-5 p-4 bg-white">
+
+                <div class="widget-body row">
+                    <div class="form-group col-md-6">
+                        <div class="col-md-12">
+                            <div class=" form-group">
+                                <label for="ReferentID">Referent nabavke</label>
+                                <select class="js-example-basic-single toast-top-full-width" id="ReferentId" style="width:280px;" name="SifraReferentaNabavke">
+                                    @foreach (var item in (List<SelectListItem>)ViewBag.Referenti)
+                                    {
+                                        <option value="@item.Value">
+                                            <span class="nazivArtikla"> @Html.DisplayFor(modelItem => item.Text)</span>
+                                        </option>
+                                    }
+                                </select>
+                                <span class="fa fa-search form-control-feedback"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class=" form-group">
+                                <label for="OdgovorniID">Odgovoran/a</label>
+                                <select class="js-example-basic-single toast-top-full-width" id="OdgovorniId" style="width:280px;" name="Sifraodgovornog">
+                                    @foreach (var item in (List<SelectListItem>)ViewBag.Odgovorni)
+                                    {
+                                        <option value="@item.Value">
+                                            <span class="nazivArtikla"> @Html.DisplayFor(modelItem => item.Text)</span>
+                                        </option>
+                                    }
+                                </select>
+                                <span class="fa fa-search form-control-feedback"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="napomenaRadnika">Obrazloženje</label>
+                                <textarea class="form-control textarea-scroll" id="Obrazlozenja" name="Obrazlozenja" rows="4"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class=" row">
+                            <div id="drop_zone" class="fileContainer ">
+                                <input type="file" name="Files" value="aaa" multiple id="Dokumenti" hidden />
+                                <div class="text-center">
+                                    <div class="col-12 pt-5">
+                                        <img src="~/Content/img/download-arrow (2).png" />
+                                    </div>
+                                    <label class="dokumentiLink " for="Dokumenti">
+                                        <strong class="linkFajl">Pretražite fajlove </strong>
+                                        <span>ili prevucite iz foldera</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row Ikone mt-0 pt-0" id="Ikone"> </div>
+                    </div>
+                </div>
+                <div class="col-md-12 text-center pt-2">
+                    <button id="BtnPrikaziModal" type="button" class="btn btn-primary btn-lg mr-1 mb-2">
+                        <i class="fas fa-check"></i>Pošalji zahtjev za nabavku
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="page-header">
+            <div class="d-flex align-items-center">
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="row flex-row ">
+        <div class="col-md-12">
+            <div class="jumbotron shadow-lg rounded mb-5 p-4 bg-white">
+                <h4 class="page-header-title">Lista stavki nabavke</h4>
+                <div class="widget-body-no-padding mt-4">
+                    <div class="table-responsive text-center">
+                        <table class="table table-hover table-bordered mb-0 shadow-lg rounded" id="tabelaArtikala">
+                            <thead style="color: #FFF">
+                                <tr style="background: #538AC5;">
+                                    <th class="w-17">#</th>
+                                    <th class="w-17">Opis artikla</th>
+                                    <th class="w-17">Količina</th>
+                                    <th class="w-17">Dobavljač</th>
+                                    <th class="w-17">Jedinična cijena</th>
+                                    <th class="w-17">Ukupna cijena stavke</th>
+                                    <th class="w-17">Obriši stavku</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row justify-content-end pt-3">
+                    <div class="col-md-3">
+                        <label style="font-weight:bold">Ukupna cijena nabavke:</label>
+                        <input class="form-control font-weight-bold" style="color:#00357a" type="text" id="UkupnaCijenaNabavke" disabled />
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <div id="listaStavkiContainer"></div>
+    </div>
+
+
+    @*//Modal za potvrdi nabavku*@
+    <div class="modal fade" id="PotvrdiNabavku" tabindex="-1" role="dialog" aria-labelledby="PotvrdiNabavkuLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Kreiranje nabavke
+                </div>
+                <div class="modal-body">
+                    Da li ste sigurni da želite izvršiti nabavku?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Odustani</button>
+                    <input type="submit" class="btn btn-primary" id="btnSubmit" value="Potvrdi" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+@*Loader pri slanju novog zahtjeva*@
+
+    <div class="modal modal-backdrop fade" id="loader" tabindex="-1" role="dialog" aria-labelledby="loaderModal" aria-hidden="true">
+        <div class="modal-dialog" role="document" style="top:22%">
+            <div class="cssload-loader">
+                <div class="cssload-inner cssload-one"></div>
+                <div class="cssload-inner cssload-two"></div>
+                <div class="cssload-inner cssload-three"></div>
+            </div>
+        </div>
+    </div>
+
+
+@section scripts{
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
+
+    <script src="~/Scripts/Skripte/SkriptaZaKriranjeNoveNabavkeOsnovnogSredstva.js"></script>
+}

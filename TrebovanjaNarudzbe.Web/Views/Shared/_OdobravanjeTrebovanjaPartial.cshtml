@@ -1,0 +1,95 @@
+﻿@model TrebovanjaNarudzbe.Web.ViewModels.TrebovanjeViewModel
+
+
+
+<div class="col-md-6 divZaTrazenjeIDa">
+
+    <p id="idTrebovanja" hidden rel="@Model.TrebovanjeId"></p>
+    <div class="jumbotron shadow-lg rounded mb-5 p-4 bg-white ">
+        <div class="row">
+            <div class="col-6">
+                <h5>Trebovanje: @Model.SerijskiBroj</h5>
+                <h5>Narucilac: @Model.ImeIPrezimeRadnika</h5>
+            </div>
+            <div class="col-6 text-right">
+                <h5>Datum podnošenja zahtjeva:<br> @Model.DatumPodnesenogZahtjeva.ToString("dd. MMM yyyy")</h5>
+            </div>
+        </div>
+        <hr class="my-4">
+        <div class="widget has-shadow">
+
+            <div class="widget-body-no-padding">
+                <div class="table-responsive">
+                    <table class="table mb-0 table-bordered">
+                        <thead class="bg-primary text-white">
+                            <tr style="background: #538AC5;">
+                                <th>Šifra artikla</th>
+                                <th>Naziv artikla</th>
+                                <th>Tražena količina</th>
+                                <th>Cijena</th>
+                            </tr>
+                        </thead>
+                        @for (int i = 0; i < Model.ListaArtikalaTrebovanja.Count(); i++)
+                        {
+                            <tbody>
+                                @if (i % 2 == 0)
+                                {
+                                    <tr class="bg-white">
+                                        <td>@Model.ListaArtikalaTrebovanja[i].ArtiklId</td>
+                                        <td>@Model.ListaArtikalaTrebovanja[i].Naziv</td>
+                                        <td>@Model.ListaArtikalaTrebovanja[i].TrebovanaKolicina</td>
+                                        <td>@Model.ListaArtikalaTrebovanja[i].Cijena</td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr class="bg-light">
+                                        <td>@Model.ListaArtikalaTrebovanja[i].ArtiklId</td>
+                                        <td>@Model.ListaArtikalaTrebovanja[i].Naziv</td>
+                                        <td>@Model.ListaArtikalaTrebovanja[i].TrebovanaKolicina</td>
+                                        <td>@Model.ListaArtikalaTrebovanja[i].Cijena</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+        @if (Model.NapomenaRadnika != "")
+        {
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Napomena radnika</span>
+                    </div>
+                    <p id="NapomenaRadnika" class="form-control" aria-label="Napomena nadredjenog ">@Model.NapomenaRadnika</p>
+                </div>
+            </div>
+        </div>
+        }
+
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Napomena nadredjenog</span>
+                    </div>
+                    <textarea id="NapomenaNadredjenog" class="form-control" aria-label="Napomena nadredjenog ">@Model.NapomenaNadredjenog</textarea>
+                </div>
+            </div>
+        </div>
+        <hr class="my-4">
+        <div class="row text-left ">
+            <div class="col-6">
+                <input type="button" class="btn btn-danger btnOdbij" value="Odbij" />
+            </div>
+            <div class="col-6  text-right">
+                <input type="button" class="btn btn-success btnOdobri" value="Odobri" />
+            </div>
+        </div>
+    </div>
+
+
+</div>

@@ -1,0 +1,148 @@
+﻿@model TrebovanjaNarudzbe.Web.ViewModels.NabavkaViewModel
+
+@{
+    ViewBag.Title = "PrikazNabavke";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Naslov = "Skladište > Detalji nabavke";
+}
+
+<style>
+    .pozadinaTabele {
+        background-color: #538AC5;
+        color: white;
+        font-size: 15px;
+    }
+
+    .pozadina {
+        background-color: #ffde7b6e;
+    }
+</style>
+<div class="container">
+    <div class="row">
+
+        <div class=" row jumbotron bg-white">
+            <div class="col-md-12 text-left">
+                <h3>Nabavka br.: @Html.DisplayFor(model => model.SerijskiBroj)</h3>
+            </div>
+            <div class="col-md-6 mt-3"><h4>Naručilac: @Html.DisplayFor(model => model.ImeIPrezimeRadnika)</h4></div>
+            <div class="col-md-6 mt-3"><h4>Datum podnošenja zahtjeva : @Html.DisplayFor(model => model.DatumPodnosenjaZahtjeva)</h4></div>
+
+            <hr class="my-4">
+            <div class="col-md-12 mt-4 hid" id="idNabavke" value="@Model.NabavkaId">
+                <span class="list-group-item pozadinaTabele">Stavke:</span>
+                <ul class="list-group font-weight-bolder">
+                    @foreach (var artikl in Model.Stavke)
+                    {
+                        //if provjera ako je item preuzet da se doda zelena bg na li
+                        <li class="list-group-item @if (artikl.Preuzeto) { <text>list-group-item-success</text> } else if(artikl.Spremno){<text>pozadina</text> } " rel="@artikl.NabavkaVeznaId">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    Šifra: <span class="font-weight-bolder">@artikl.NabavkaVeznaId </span>
+                                    <br />   Opis: <span class="font-weight-bolder">@artikl.Opis</span>
+                                    <br /> Količina:  &nbsp;<span class="font-weight-bolder">@artikl.Kolicina</span>
+                                    <br /> Dobavljljač:  &nbsp;<span class="font-weight-bolder">@artikl.Dobavljac</span>
+                                </div>
+                                @*provjera ako je artikl cekiran cekiraj checkbox*@
+                                <div class="col-md-5 text-right mr-1">
+                                    @if (artikl.Spremno)
+                                    {
+
+                                        <input class="SpremnoCheckBox mr-1" type="checkbox" name="checkBoxSpremno" checked><span class="mr-4">Spremno</span>
+                                    }
+                                    else
+                                    { <input class="SpremnoCheckBox mr-1" type="checkbox" name="checkBoxSpremno"><span class="mr-4">Spremno</span>}
+                                    @if (artikl.Preuzeto)
+                                    {
+                                        <input class="PreuzetoCheckBox  mr-1" type="checkbox" name="checkBoxPreuzeto" checked><span>Preuzeto</span>
+                                    }
+                                    else
+                                    { <input class="PreuzetoCheckBox  mr-1" type="checkbox" name="checkBoxPreuzeto"><span>Preuzeto</span>}
+                                </div>
+                            </div>
+                        </li>
+
+                    }
+
+                </ul>
+
+                <div class="col-md-12">
+                    <hr class="my-4">
+                    <div class="row text-center">
+                        @foreach (var dokument in Model.Dokumenti)
+                        {
+                            string ekstenzija = dokument.FileName.Split('.').LastOrDefault().ToLower();
+                            <div class="col-md-3">
+                                <a href="@Url.Action("PreuzimanjeDokumenta","Nabavke", new { dokumentId = @dokument.DokumentId })">
+                                    @if (ekstenzija == "pdf")
+                                    {
+                                        <img style="width:100%; height:80px;" src="/Content/img/pdf-1.png" />
+                                    }
+                                    else if (ekstenzija == "png" || ekstenzija == "jpg" || ekstenzija == "jpeg" || ekstenzija == "gif")
+                                    {
+                                        <img src="/Content/img/polaroid-1.png" />
+                                    }
+                                    else if (ekstenzija == "docx")
+                                    {
+                                        <img style="width:100%; height:80px;" src="/Content/img/word-1.png" />
+                                    }
+                                    else if (ekstenzija == "xlsx")
+                                    {
+                                        <img style="width:100%; height:80px;" src="/Content/img/excel.png" />
+                                    }
+                                    else
+                                    {
+                                        <img style="width:100%; height:80px;" src="/Content/img/default.png" />
+                                    }
+                                    <p>@dokument.FileName</p>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <hr class="my-4">
+                <div class="col-md-12 text-right">
+                    <button id="btnSacuvajJednuNabavku" type="button" value="@Model.NabavkaId" class="btn btn-outline-primary btn-lg"><i class="fas fa-save" style="font-size:15pt;"></i>Sačuvaj</button>
+                </div>
+
+
+
+
+
+            </div>
+
+        </div>
+
+        
+
+        <div class="col-md-12 text-left">
+
+            <a href="@Url.Action("AktivneNabavke", "Skladiste")" class="btn btn-outline-primary btn-lg">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                <span>
+                    <strong>Nazad na sve nabavke</strong>
+                </span>
+            </a>
+        </div>
+    </div>
+
+
+
+
+</div>
+
+<!--modal koji ima loader u sebi-->
+<div class="modal modal-backdrop fade" id="loader" tabindex="-1" role="dialog" aria-labelledby="loaderModal" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="top:22%">
+        <div class="cssload-loader">
+            <div class="cssload-inner cssload-one"></div>
+            <div class="cssload-inner cssload-two"></div>
+            <div class="cssload-inner cssload-three"></div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script src="~/Scripts/Skripte/AktivneNabavkeZaSkladiste.js"></script>
+}

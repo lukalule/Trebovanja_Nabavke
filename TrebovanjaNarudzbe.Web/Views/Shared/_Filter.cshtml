@@ -1,0 +1,76 @@
+﻿<div class="row margina">
+
+    @*<div class="col-md-12 mb-4">
+
+        <a class="btn btn-outline-primary btn-lg" data-toggle="collapse" href="#filter" role="button" aria-expanded="false" aria-controls="filter"><i class="fas fa-sort-alpha-down"></i>Prikaži filter</a>
+
+
+    </div>*@
+    <div class="collapse multi-collapse col-md-12" id="filter">
+        <div class="card card-body">
+            <div class="row form-inline">
+                @*pretraga po artiklima*@
+
+                <div class="input-group col p-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" for="pretragaPoKorisnikuIArtiklu" id="inputGroup-sizing-default" style="background-color:#538AC5; color: white;"><i class="fa fa-search searchIcon" style="padding:0;"></i>&nbsp;Pretraga</span>
+                    </div>
+                    <input value="@ViewBag.SortiranjePoImenu" id="pretragaPoKorisnikuIArtiklu" type="text" name="SortiranjePoImenu" class="form-control" placeholder="po imenu ili artiklu"
+                           aria-label="Default" aria-describedby="inputGroup-sizing-default">
+
+                    <div class="input-group-prepend" id="BtnObrisiPretragu">
+                        <span style="cursor:pointer; color:red;" class="input-group-text"><i class="fas fa-times" style="padding:0;"></i></span>
+                    </div>
+                </div>
+
+
+                @*sortiranje po datumu*@
+
+                <div class="input-group  col p-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputSortiranjeDatum" style="background-color:#538AC5; color: white;"> <i class="fa fa-search searchIcon" style="padding:0;"></i>&nbsp; Sortiranje po datumu</label>
+                    </div>
+                    <select value="@ViewBag.SortiranjeDatum" name="SortiranjeDatum" class="custom-select" id="inputSortiranjeDatum">
+                        <option selected>Izaberi...</option>
+                        <option value="2">Od najnovijeg ka najstarijem</option>
+                        <option value="1">Od najstarijeg ka najnovijem</option>
+                    </select>
+                </div>
+
+
+                @*sortiranje po statusu trebovanja*@
+
+                @if (ViewBag.ListaStatusa != null)
+                {
+
+            
+                <div class="input-group col p-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="sortiranjeStatus" style="background-color:#538AC5; color: white;"> <i class="fa fa-search searchIcon" style="padding:0;"></i>&nbsp; Status trebovanja</label>
+                    </div>
+                    @{string a = ""; if (ViewBag.StatusTrebovanja == null)
+                        { a = "Prikazi sve..."; }
+                        else { a = ViewBag.StatusTrebovanja; }
+
+                    }
+
+                    @Html.DropDownList("ListaStatusa", new SelectList(ViewBag.ListaStatusa, "Value", "Text"), a, new { id = "sortiranjeStatus", @class = "dropdown custom-select" })
+
+
+                </div>
+
+                 }
+
+                <div class="col-md-12 p-3 m-3 text-center">
+
+                    <button id="btnObrisiFilterVrijednosti" type="button" class="btn btn-outline-danger"><i class="fa fa-trash" aria-hidden="true"></i>Očisti filter</button>
+       
+                        <button id="btnFilter" type="button" class="btn btn-outline-primary"><i class="fas fa-sort-alpha-down"></i>Filtriraj...</button>
+     
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

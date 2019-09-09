@@ -1,0 +1,71 @@
+﻿@model TrebovanjaNarudzbe.Web.ViewModels.NabavkaViewModel
+
+<div id="@Model.NabavkaId" class="col-md-12 bg-white jumbotron paddingJumbotron shadow-lg rounded mb-5 mt-5">
+    <div class="row font-weight-bolder">
+        <div class="col-md-12 mb-3"><h4>Trebovanje @Model.SerijskiBroj</h4></div>
+        <div class="col-md-6"> <p>Poručilac: @Model.ImeIPrezimeRadnika</p></div>
+        <div class="col-md-6 text-right">
+            <p>Datum podnošenja zahtjeva: @Model.DatumPodnosenjaZahtjeva.ToString("dd. MMM yyyy")</p>
+        </div>
+    </div>
+
+    <hr class="my-4">
+
+    <div class="table-responsive">
+        <table class="table mb-0 table-bordered table-striped">
+            <thead class="text-white">
+                <tr style="background: #538AC5;">
+                    <th>Šifra: </th>
+                    <th>Opis: </th>
+                    <th>Količina: </th>
+                    <th>Dobavljač: </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var artikl in Model.Stavke)
+                {
+                    <tr>
+                        <td>@artikl.NabavkaVeznaId</td>
+                        <td>@artikl.Opis</td>
+                        <td>@artikl.Kolicina</td>
+                        <td>@artikl.Dobavljac</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-12">
+        <hr class="my-4">
+        <div class="row text-center">
+            @foreach (var dokument in Model.Dokumenti)
+            {
+                string ekstenzija = dokument.FileName.Split('.').LastOrDefault().ToLower();
+                <div class="class='col-md-2 m-2">
+                    <a href="@Url.Action("PreuzimanjeDokumenta","Nabavke", new { dokumentId = @dokument.DokumentId })">
+                        @if (ekstenzija == "pdf")
+                        {
+                            <img class="img-ikone" style="width:35px; height:auto;" src="/Content/img/pdf-1.png" />
+                        }
+                        else if (ekstenzija == "png" || ekstenzija == "jpg" || ekstenzija == "jpeg" || ekstenzija == "gif")
+                        {
+                            <img class="img-ikone" style="width:35px; height:auto;" src="/Content/img/polaroid-1.png" />
+                        }
+                        else if (ekstenzija == "docx")
+                        {
+                            <img class="img-ikone" style="width:35px; height:auto;" src="/Content/img/word-1.png" />
+                        }
+                        else if (ekstenzija == "xlsx")
+                        {
+                            <img class="img-ikone" style="width:35px; height:auto;" src="/Content/img/excel.png" />
+                        }
+                        else
+                        {
+                            <img class="img-ikone" style="width:35px; height:auto;" src="/Content/img/default.png" />
+                        }
+                        <span class="text-muted text-truncate ikone" style="width:100px;">@dokument.FileName</span>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>

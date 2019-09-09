@@ -1,0 +1,8 @@
+﻿@model TrebovanjaNarudzbe.Web.ViewModels.TrebovanjeViewModel
+@{
+    ViewBag.Title = "Detalji Trebovanja";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Naslov = "Trebovnaje > Detalji trebovanja";
+}
+
+@Html.Partial("_TrebovanjePartial", Model);

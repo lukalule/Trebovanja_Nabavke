@@ -1,0 +1,34 @@
+﻿@model List<TrebovanjaNarudzbe.Web.ViewModels.NabavkaViewModel>
+
+@{
+    ViewBag.Title = "OdobravanjeListeNabavki";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Naslov = "Nabavke > Lista nabavki za odobravanje";
+}
+
+<div class="col-md-12 row" id="nabavka">
+
+    @foreach (var nabavka in Model)
+    {
+        @Html.Partial("_OdobravanjeNabavkePartial", nabavka)
+    }
+    @if (Model.Count == 0)
+    {
+        <h1>Nemate nabavki za odobravanje</h1>
+    }
+</div>
+
+@* modal za akciju, loader *@
+<div class="modal modal-backdrop fade" id="loader" tabindex="-1" role="dialog" aria-labelledby="loaderModal" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="top:22%">
+        <div class="cssload-loader">
+            <div class="cssload-inner cssload-one"></div>
+            <div class="cssload-inner cssload-two"></div>
+            <div class="cssload-inner cssload-three"></div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/Skripte/OdobravanjeNabavke.js"></script>
+}
